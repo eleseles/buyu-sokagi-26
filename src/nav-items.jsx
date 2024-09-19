@@ -1,4 +1,4 @@
-import { HomeIcon, TestTubeIcon, AlertCircleIcon, BookIcon, PrayIcon, ShieldIcon, ShoppingBagIcon } from "lucide-react";
+import { HomeIcon, TestTubeIcon, AlertCircleIcon, BookIcon, BookOpenIcon, ShieldIcon, ShoppingBagIcon } from "lucide-react";
 import Index from "./pages/Index.jsx";
 import BuyuTesti from "./pages/BuyuTesti.jsx";
 import BuyuBelirtileri from "./pages/BuyuBelirtileri.jsx";
@@ -35,7 +35,7 @@ export const navItems = [
   {
     title: "Büyü Duaları",
     to: "/buyu-dualari",
-    icon: <PrayIcon className="h-4 w-4" />,
+    icon: <BookOpenIcon className="h-4 w-4" />,
     page: <BuyuDualari />,
   },
   {
