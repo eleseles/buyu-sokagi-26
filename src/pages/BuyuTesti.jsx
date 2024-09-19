@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { motion, AnimatePresence } from 'framer-motion';
-import { Star, AlertTriangle, Moon, Volume2, Zap } from 'lucide-react';
+import { Star, AlertTriangle, Moon, Volume2, Zap, Heart, Shield, Sparkles } from 'lucide-react';
 
 const BuyuTesti = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -13,23 +13,43 @@ const BuyuTesti = () => {
   const questions = [
     {
       question: "Son zamanlarda sürekli kötü şansla mı karşılaşıyorsunuz?",
-      icon: Star
+      icon: Star,
+      options: ["Evet, her şey ters gidiyor", "Bazen kötü şansım oluyor", "Hayır, şansım normal"]
     },
     {
       question: "Açıklanamayan sağlık sorunları yaşıyor musunuz?",
-      icon: AlertTriangle
+      icon: AlertTriangle,
+      options: ["Evet, sürekli", "Ara sıra", "Hayır, sağlığım iyi"]
     },
     {
       question: "Rüyalarınızda sık sık kabus görüyor musunuz?",
-      icon: Moon
+      icon: Moon,
+      options: ["Evet, neredeyse her gece", "Bazen görüyorum", "Hayır, rüyalarım normal"]
     },
     {
       question: "Etrafınızda açıklanamayan sesler veya hareketler fark ediyor musunuz?",
-      icon: Volume2
+      icon: Volume2,
+      options: ["Evet, sık sık", "Ara sıra olur", "Hayır, hiç olmadı"]
     },
     {
       question: "Ani ve açıklanamayan duygusal değişimler yaşıyor musunuz?",
-      icon: Zap
+      icon: Zap,
+      options: ["Evet, çok sık", "Bazen oluyor", "Hayır, duygularım dengeli"]
+    },
+    {
+      question: "İlişkilerinizde sürekli sorunlar yaşıyor musunuz?",
+      icon: Heart,
+      options: ["Evet, her ilişkimde", "Bazen sorunlar oluyor", "Hayır, ilişkilerim iyi"]
+    },
+    {
+      question: "Kendinizi sürekli yorgun ve enerjisiz hissediyor musunuz?",
+      icon: Shield,
+      options: ["Evet, her zaman", "Bazen yorgun oluyorum", "Hayır, enerjim yerinde"]
+    },
+    {
+      question: "Hayalleriniz ve hedefleriniz sürekli engelleniyor mu?",
+      icon: Sparkles,
+      options: ["Evet, hiçbir şey yolunda gitmiyor", "Bazen zorluklar yaşıyorum", "Hayır, hedeflerime ulaşabiliyorum"]
     }
   ];
 
@@ -45,13 +65,30 @@ const BuyuTesti = () => {
   };
 
   const calculateResult = (finalAnswers) => {
-    const score = finalAnswers.filter(answer => answer === 'Evet').length;
-    if (score >= 4) {
-      setResult("Büyü etkisi altında olma ihtimaliniz çok yüksek. Acilen bir uzmana danışmanızı öneririz.");
-    } else if (score >= 2) {
-      setResult("Büyü etkisi altında olabilirsiniz. Daha fazla araştırma yapmanızı ve kendinizi korumanızı öneririz.");
+    const score = finalAnswers.reduce((total, answer) => {
+      if (answer === questions[total].options[0]) return total + 2;
+      if (answer === questions[total].options[1]) return total + 1;
+      return total;
+    }, 0);
+
+    if (score >= 12) {
+      setResult({
+        text: "Büyü etkisi altında olma ihtimaliniz çok yüksek. Acilen bir uzmana danışmanızı öneririz.",
+        icon: AlertTriangle,
+        color: "text-red-500"
+      });
+    } else if (score >= 6) {
+      setResult({
+        text: "Büyü etkisi altında olabilirsiniz. Daha fazla araştırma yapmanızı ve kendinizi korumanızı öneririz.",
+        icon: Shield,
+        color: "text-yellow-500"
+      });
     } else {
-      setResult("Büyü etkisi altında olma ihtimaliniz düşük görünüyor. Yine de dikkatli olun ve kendinizi koruyun.");
+      setResult({
+        text: "Büyü etkisi altında olma ihtimaliniz düşük görünüyor. Yine de dikkatli olun ve kendinizi koruyun.",
+        icon: Sparkles,
+        color: "text-green-500"
+      });
     }
   };
 
@@ -71,9 +108,9 @@ const BuyuTesti = () => {
                 className="text-center"
               >
                 <h3 className="text-2xl font-semibold mb-4 text-white">Test Sonucunuz:</h3>
-                <p className="text-lg mb-6 text-purple-100">{result}</p>
+                <p className="text-lg mb-6 text-purple-100">{result.text}</p>
                 <div className="w-32 h-32 mx-auto mb-6 bg-purple-300 rounded-full flex items-center justify-center">
-                  <Star className="w-20 h-20 text-purple-700" />
+                  {React.createElement(result.icon, { className: `w-20 h-20 ${result.color}` })}
                 </div>
                 <Button onClick={() => window.location.reload()} className="bg-white text-purple-700 hover:bg-purple-100">
                   Testi Tekrarla
@@ -95,9 +132,16 @@ const BuyuTesti = () => {
                       {React.createElement(questions[currentQuestion].icon, { className: "w-16 h-16 text-purple-700" })}
                     </div>
                     <h3 className="text-xl font-semibold mb-4 text-white">{questions[currentQuestion].question}</h3>
-                    <div className="flex justify-center space-x-4">
-                      <Button onClick={() => handleAnswer('Evet')} className="bg-green-500 hover:bg-green-600">Evet</Button>
-                      <Button onClick={() => handleAnswer('Hayır')} className="bg-red-500 hover:bg-red-600">Hayır</Button>
+                    <div className="flex flex-col space-y-4">
+                      {questions[currentQuestion].options.map((option, index) => (
+                        <Button 
+                          key={index} 
+                          onClick={() => handleAnswer(option)} 
+                          className={`bg-purple-600 hover:bg-purple-700 text-white`}
+                        >
+                          {option}
+                        </Button>
+                      ))}
                     </div>
                   </motion.div>
                 </AnimatePresence>
