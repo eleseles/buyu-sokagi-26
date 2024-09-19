@@ -1,4 +1,4 @@
-import { HomeIcon, TestTubeIcon, AlertCircleIcon, BookIcon, BookOpenIcon, ShieldIcon, ShoppingBagIcon } from "lucide-react";
+import { HomeIcon, TestTubeIcon, AlertCircleIcon, BookIcon, BookOpenIcon, ShieldIcon, ShoppingBagIcon, Wand2Icon, StarIcon, UsersIcon, SparklesIcon, FeatherIcon } from "lucide-react";
 import Index from "./pages/Index.jsx";
 import BuyuTesti from "./pages/BuyuTesti.jsx";
 import BuyuBelirtileri from "./pages/BuyuBelirtileri.jsx";
@@ -6,6 +6,10 @@ import BuyuYapimi from "./pages/BuyuYapimi.jsx";
 import BuyuDualari from "./pages/BuyuDualari.jsx";
 import BuyuBozma from "./pages/BuyuBozma.jsx";
 import BuyuKitabi from "./pages/BuyuKitabi.jsx";
+import BuyuTurleri from "./pages/BuyuTurleri.jsx";
+import KullaniciDeneyimleri from "./pages/KullaniciDeneyimleri.jsx";
+import AstrolojiveBuyu from "./pages/AstrolojiveBuyu.jsx";
+import GunlukTavsiyeler from "./pages/GunlukTavsiyeler.jsx";
 
 export const navItems = [
   {
@@ -29,7 +33,7 @@ export const navItems = [
   {
     title: "Büyü Yapımı",
     to: "/buyu-yapimi",
-    icon: <BookIcon className="h-4 w-4" />,
+    icon: <Wand2Icon className="h-4 w-4" />,
     page: <BuyuYapimi />,
   },
   {
@@ -47,7 +51,31 @@ export const navItems = [
   {
     title: "Büyü Kitabı",
     to: "/buyu-kitabi",
-    icon: <ShoppingBagIcon className="h-4 w-4" />,
+    icon: <BookIcon className="h-4 w-4" />,
     page: <BuyuKitabi />,
+  },
+  {
+    title: "Büyü Türleri",
+    to: "/buyu-turleri",
+    icon: <StarIcon className="h-4 w-4" />,
+    page: <BuyuTurleri />,
+  },
+  {
+    title: "Kullanıcı Deneyimleri",
+    to: "/kullanici-deneyimleri",
+    icon: <UsersIcon className="h-4 w-4" />,
+    page: <KullaniciDeneyimleri />,
+  },
+  {
+    title: "Astroloji ve Büyü",
+    to: "/astroloji-ve-buyu",
+    icon: <SparklesIcon className="h-4 w-4" />,
+    page: <AstrolojiveBuyu />,
+  },
+  {
+    title: "Günlük Tavsiyeler",
+    to: "/gunluk-tavsiyeler",
+    icon: <FeatherIcon className="h-4 w-4" />,
+    page: <GunlukTavsiyeler />,
   },
 ];
