@@ -1,67 +1,86 @@
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { motion } from 'framer-motion';
 
 const BuyuTurleri = () => {
   const buyuTurleri = [
     {
       title: "Aşk Büyüsü",
-      content: "Aşk büyüsü, iki kişi arasındaki duygusal bağı güçlendirmek veya yeni bir aşk çekmek için yapılır. Genellikle gül yaprakları, kırmızı mum ve kişisel eşyalar kullanılır. Dikkatli kullanılması gereken güçlü bir büyü türüdür.",
-      image: "https://example.com/ask-buyusu.jpg"
+      description: "İki kişi arasındaki duygusal bağı güçlendirmek veya yeni bir aşk çekmek için yapılır.",
+      image: "/images/love-spell.jpg"
     },
     {
       title: "Şans Büyüsü",
-      content: "Şans büyüsü, kişinin hayatına olumlu enerji çekmek ve şansını artırmak için yapılır. Dört yapraklı yonca, at nalı ve yeşil mum gibi şans getirici nesneler kullanılır. Hayatınızdaki fırsatları artırmak için idealdir.",
-      image: "https://example.com/sans-buyusu.jpg"
+      description: "Kişinin hayatına olumlu enerji çekmek ve şansını artırmak için yapılır.",
+      image: "/images/luck-spell.jpg"
     },
     {
       title: "Koruma Büyüsü",
-      content: "Koruma büyüsü, kişiyi negatif enerjilerden ve kötü niyetli büyülerden korumak için yapılır. Tuz, beyaz mum ve koruyucu semboller kullanılır. Kendinizi ve sevdiklerinizi korumak için güçlü bir araçtır.",
-      image: "https://example.com/koruma-buyusu.jpg"
+      description: "Kişiyi negatif enerjilerden ve kötü niyetli büyülerden korumak için yapılır.",
+      image: "/images/protection-spell.jpg"
     },
     {
       title: "Zenginlik Büyüsü",
-      content: "Zenginlik büyüsü, maddi refah ve bolluk çekmek için yapılır. Altın renkli nesneler, para ve tarçın gibi malzemeler kullanılır. Finansal hedeflerinize ulaşmanıza yardımcı olabilir.",
-      image: "https://example.com/zenginlik-buyusu.jpg"
+      description: "Maddi refah ve bolluk çekmek için yapılır.",
+      image: "/images/wealth-spell.jpg"
     },
     {
       title: "Sağlık Büyüsü",
-      content: "Sağlık büyüsü, hastalıklardan korunmak veya iyileşmeyi hızlandırmak için yapılır. Şifalı bitkiler, kristaller ve mavi mum kullanılır. Fiziksel ve zihinsel sağlığınızı desteklemek için kullanılır.",
-      image: "https://example.com/saglik-buyusu.jpg"
+      description: "Hastalıklardan korunmak veya iyileşmeyi hızlandırmak için yapılır.",
+      image: "/images/health-spell.jpg"
     },
+    {
+      title: "Başarı Büyüsü",
+      description: "Kişisel ve profesyonel hedeflere ulaşmak için yapılır.",
+      image: "/images/success-spell.jpg"
+    }
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-2xl text-center text-purple-700">Büyü Türleri</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="mb-6 text-lg">Büyü dünyasında çeşitli amaçlara hizmet eden farklı büyü türleri bulunur. İşte en yaygın büyü türleri ve özellikleri:</p>
-            <Accordion type="single" collapsible className="w-full">
-              {buyuTurleri.map((buyu, index) => (
-                <AccordionItem key={index} value={`item-${index}`}>
-                  <AccordionTrigger className="text-lg font-semibold">{buyu.title}</AccordionTrigger>
-                  <AccordionContent>
-                    <div className="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-4">
-                      <img src={buyu.image} alt={buyu.title} className="w-full md:w-1/3 rounded-lg" />
-                      <p className="text-gray-700">{buyu.content}</p>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-            <p className="mt-6 text-sm text-gray-500">Not: Büyü yapmak, etik ve yasal sonuçları olabilecek bir konudur. Bu bilgiler sadece bilgilendirme amaçlıdır.</p>
-          </CardContent>
-        </Card>
-      </motion.div>
+    <div className="min-h-screen bg-gradient-to-b from-purple-100 to-indigo-200 py-12">
+      <div className="container mx-auto px-4">
+        <motion.h1 
+          className="text-4xl font-bold text-center mb-12 text-purple-800"
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          Büyü Türleri
+        </motion.h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {buyuTurleri.map((buyu, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1, duration: 0.5 }}
+            >
+              <Card className="h-full overflow-hidden">
+                <img src={buyu.image} alt={buyu.title} className="w-full h-48 object-cover" />
+                <CardHeader>
+                  <CardTitle className="text-xl text-purple-700">{buyu.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600">{buyu.description}</p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+        <motion.div 
+          className="text-center mt-12"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6, duration: 0.5 }}
+        >
+          <p className="text-lg text-gray-700 mb-4">
+            Büyü türleri hakkında daha fazla bilgi edinmek ve kişisel danışmanlık almak için üye olun.
+          </p>
+          <a href="/uye-ol" className="inline-block bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors duration-300">
+            Üye Ol
+          </a>
+        </motion.div>
+      </div>
     </div>
   );
 };
