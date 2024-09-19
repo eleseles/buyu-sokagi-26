@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { motion, AnimatePresence } from 'framer-motion';
+import { Star, AlertTriangle, Moon, Volume2, Zap } from 'lucide-react';
 
 const BuyuTesti = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -12,23 +13,23 @@ const BuyuTesti = () => {
   const questions = [
     {
       question: "Son zamanlarda sürekli kötü şansla mı karşılaşıyorsunuz?",
-      image: "/images/bad-luck.jpg"
+      icon: Star
     },
     {
       question: "Açıklanamayan sağlık sorunları yaşıyor musunuz?",
-      image: "/images/health-issues.jpg"
+      icon: AlertTriangle
     },
     {
       question: "Rüyalarınızda sık sık kabus görüyor musunuz?",
-      image: "/images/nightmares.jpg"
+      icon: Moon
     },
     {
       question: "Etrafınızda açıklanamayan sesler veya hareketler fark ediyor musunuz?",
-      image: "/images/strange-noises.jpg"
+      icon: Volume2
     },
     {
       question: "Ani ve açıklanamayan duygusal değişimler yaşıyor musunuz?",
-      image: "/images/mood-swings.jpg"
+      icon: Zap
     }
   ];
 
@@ -55,11 +56,11 @@ const BuyuTesti = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-100 to-indigo-200 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 py-12">
       <div className="container mx-auto px-4">
-        <Card className="max-w-2xl mx-auto">
+        <Card className="max-w-2xl mx-auto bg-white bg-opacity-10 backdrop-blur-md">
           <CardHeader>
-            <CardTitle className="text-3xl text-center text-purple-800">Bende Büyü Var Mı? Testi</CardTitle>
+            <CardTitle className="text-3xl text-center text-white">Bende Büyü Var Mı? Testi</CardTitle>
           </CardHeader>
           <CardContent>
             {result ? (
@@ -69,10 +70,12 @@ const BuyuTesti = () => {
                 transition={{ duration: 0.5 }}
                 className="text-center"
               >
-                <h3 className="text-2xl font-semibold mb-4 text-purple-700">Test Sonucunuz:</h3>
-                <p className="text-lg mb-6">{result}</p>
-                <img src="/images/crystal-ball-result.jpg" alt="Test Sonucu" className="w-full max-w-md mx-auto rounded-lg shadow-lg mb-6" />
-                <Button onClick={() => window.location.reload()} className="bg-purple-600 text-white hover:bg-purple-700">
+                <h3 className="text-2xl font-semibold mb-4 text-white">Test Sonucunuz:</h3>
+                <p className="text-lg mb-6 text-purple-100">{result}</p>
+                <div className="w-32 h-32 mx-auto mb-6 bg-purple-300 rounded-full flex items-center justify-center">
+                  <Star className="w-20 h-20 text-purple-700" />
+                </div>
+                <Button onClick={() => window.location.reload()} className="bg-white text-purple-700 hover:bg-purple-100">
                   Testi Tekrarla
                 </Button>
               </motion.div>
@@ -86,9 +89,12 @@ const BuyuTesti = () => {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -50 }}
                     transition={{ duration: 0.3 }}
+                    className="text-center"
                   >
-                    <img src={questions[currentQuestion].image} alt={`Soru ${currentQuestion + 1}`} className="w-full h-48 object-cover rounded-lg mb-4" />
-                    <h3 className="text-xl font-semibold mb-4 text-center text-purple-800">{questions[currentQuestion].question}</h3>
+                    <div className="w-24 h-24 mx-auto mb-4 bg-purple-300 rounded-full flex items-center justify-center">
+                      {React.createElement(questions[currentQuestion].icon, { className: "w-16 h-16 text-purple-700" })}
+                    </div>
+                    <h3 className="text-xl font-semibold mb-4 text-white">{questions[currentQuestion].question}</h3>
                     <div className="flex justify-center space-x-4">
                       <Button onClick={() => handleAnswer('Evet')} className="bg-green-500 hover:bg-green-600">Evet</Button>
                       <Button onClick={() => handleAnswer('Hayır')} className="bg-red-500 hover:bg-red-600">Hayır</Button>

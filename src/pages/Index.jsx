@@ -2,23 +2,36 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { motion } from 'framer-motion';
+import { Star, Zap, Shield, Book, Users, Sparkles } from 'lucide-react';
+
+const FeatureCard = ({ icon: Icon, title, description }) => (
+  <motion.div
+    className="bg-white p-6 rounded-lg shadow-lg text-center"
+    whileHover={{ scale: 1.05 }}
+    transition={{ type: "spring", stiffness: 300 }}
+  >
+    <Icon className="w-12 h-12 mx-auto mb-4 text-purple-600" />
+    <h3 className="text-xl font-semibold mb-2 text-purple-700">{title}</h3>
+    <p className="text-gray-600">{description}</p>
+  </motion.div>
+);
 
 const Index = () => {
   const features = [
-    { title: "Büyü Testi", description: "Üzerinizdeki büyüyü keşfedin", icon: "🔮" },
-    { title: "Büyü Türleri", description: "Farklı büyü çeşitlerini öğrenin", icon: "📚" },
-    { title: "Günlük Tavsiyeler", description: "Büyülü ipuçları alın", icon: "✨" },
+    { icon: Star, title: "Büyü Testi", description: "Üzerinizdeki büyüyü keşfedin" },
+    { icon: Book, title: "Büyü Türleri", description: "Farklı büyü çeşitlerini öğrenin" },
+    { icon: Sparkles, title: "Günlük Tavsiyeler", description: "Büyülü ipuçları alın" },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-100 to-indigo-200">
-      <header className="py-6 px-4 bg-white shadow-md">
+    <div className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-500 to-red-500">
+      <header className="py-6 px-4 bg-white bg-opacity-10 backdrop-blur-md">
         <nav className="container mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-purple-700">BüyüDünyası</h1>
+          <h1 className="text-3xl font-bold text-white">BüyüDünyası</h1>
           <div className="space-x-4">
-            <Link to="/buyu-testi" className="text-purple-600 hover:text-purple-800">Büyü Testi</Link>
-            <Link to="/buyu-turleri" className="text-purple-600 hover:text-purple-800">Büyü Türleri</Link>
-            <Button asChild><Link to="/uye-ol">Üye Ol</Link></Button>
+            <Link to="/buyu-testi" className="text-white hover:text-purple-200">Büyü Testi</Link>
+            <Link to="/buyu-turleri" className="text-white hover:text-purple-200">Büyü Türleri</Link>
+            <Button asChild variant="secondary"><Link to="/uye-ol">Üye Ol</Link></Button>
           </div>
         </nav>
       </header>
@@ -26,7 +39,7 @@ const Index = () => {
       <main className="container mx-auto px-4 py-16">
         <section className="text-center mb-16">
           <motion.h2 
-            className="text-5xl font-bold mb-4 text-purple-800"
+            className="text-6xl font-bold mb-4 text-white"
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -34,7 +47,7 @@ const Index = () => {
             Büyülü Dünyanızı Keşfedin
           </motion.h2>
           <motion.p 
-            className="text-xl mb-8 text-gray-600"
+            className="text-2xl mb-8 text-purple-100"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
@@ -46,7 +59,7 @@ const Index = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.5 }}
           >
-            <Button asChild size="lg" className="bg-purple-600 text-white hover:bg-purple-700 transition-colors duration-300">
+            <Button asChild size="lg" className="bg-white text-purple-700 hover:bg-purple-100 transition-colors duration-300">
               <Link to="/buyu-testi">Hemen Büyü Testine Başla</Link>
             </Button>
           </motion.div>
@@ -54,46 +67,36 @@ const Index = () => {
 
         <section className="grid md:grid-cols-3 gap-8 mb-16">
           {features.map((feature, index) => (
-            <motion.div
-              key={index}
-              className="bg-white p-6 rounded-lg shadow-lg text-center"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 * index, duration: 0.5 }}
-            >
-              <div className="text-4xl mb-4">{feature.icon}</div>
-              <h3 className="text-xl font-semibold mb-2 text-purple-700">{feature.title}</h3>
-              <p className="text-gray-600">{feature.description}</p>
-            </motion.div>
+            <FeatureCard key={index} {...feature} />
           ))}
         </section>
 
-        <section className="text-center mb-16">
-          <h2 className="text-3xl font-bold mb-4 text-purple-800">Neden BüyüDünyası?</h2>
+        <section className="text-center mb-16 bg-white bg-opacity-10 backdrop-blur-md p-8 rounded-lg">
+          <h2 className="text-4xl font-bold mb-4 text-white">Neden BüyüDünyası?</h2>
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-              <img src="/images/magic-book.jpg" alt="Büyü Kitabı" className="w-full h-48 object-cover rounded-lg mb-4" />
-              <h3 className="text-xl font-semibold mb-2 text-purple-700">Kapsamlı Bilgi</h3>
-              <p className="text-gray-600">Yüzlerce yıllık bilgeliği modern çağa taşıyoruz.</p>
+            <div className="text-left">
+              <Zap className="w-12 h-12 text-yellow-300 mb-4" />
+              <h3 className="text-2xl font-semibold mb-2 text-white">Kapsamlı Bilgi</h3>
+              <p className="text-purple-100">Yüzlerce yıllık bilgeliği modern çağa taşıyoruz.</p>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-              <img src="/images/crystal-ball.jpg" alt="Kristal Küre" className="w-full h-48 object-cover rounded-lg mb-4" />
-              <h3 className="text-xl font-semibold mb-2 text-purple-700">Kişiselleştirilmiş Deneyim</h3>
-              <p className="text-gray-600">Size özel büyü tavsiyeleri ve testler sunuyoruz.</p>
+            <div className="text-left">
+              <Shield className="w-12 h-12 text-green-300 mb-4" />
+              <h3 className="text-2xl font-semibold mb-2 text-white">Kişiselleştirilmiş Deneyim</h3>
+              <p className="text-purple-100">Size özel büyü tavsiyeleri ve testler sunuyoruz.</p>
             </div>
           </div>
         </section>
 
         <section className="text-center">
-          <h2 className="text-3xl font-bold mb-4 text-purple-800">Büyülü Yolculuğunuza Başlayın</h2>
-          <p className="text-xl mb-8 text-gray-600">Hemen üye olun ve tüm özelliklere erişim kazanın!</p>
-          <Button asChild size="lg" className="bg-purple-600 text-white hover:bg-purple-700 transition-colors duration-300">
+          <h2 className="text-4xl font-bold mb-4 text-white">Büyülü Yolculuğunuza Başlayın</h2>
+          <p className="text-2xl mb-8 text-purple-100">Hemen üye olun ve tüm özelliklere erişim kazanın!</p>
+          <Button asChild size="lg" className="bg-purple-700 text-white hover:bg-purple-800 transition-colors duration-300">
             <Link to="/uye-ol">Ücretsiz Üye Ol</Link>
           </Button>
         </section>
       </main>
 
-      <footer className="bg-purple-800 text-white py-8">
+      <footer className="bg-purple-900 text-white py-8 mt-16">
         <div className="container mx-auto px-4 text-center">
           <p>&copy; 2024 BüyüDünyası. Tüm hakları saklıdır.</p>
         </div>
