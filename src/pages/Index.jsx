@@ -19,15 +19,15 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
+    <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold text-white text-center mb-8">Büyülü Dünyaya Hoş Geldiniz</h1>
+        <h1 className="text-4xl font-bold text-gray-800 text-center mb-8">Büyülü Dünyaya Hoş Geldiniz</h1>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {features.map((feature, index) => (
-            <Card key={index} className="hover:shadow-xl transition-shadow duration-300">
+            <Card key={index} className="hover:shadow-lg transition-shadow duration-300">
               <CardHeader>
-                <CardTitle className="flex items-center">
+                <CardTitle className="flex items-center text-primary">
                   {feature.icon}
                   <span className="ml-2">{feature.title}</span>
                 </CardTitle>
@@ -41,9 +41,9 @@ const Index = () => {
         </div>
 
         <div className="mt-12 text-center">
-          <h2 className="text-2xl font-semibold text-white mb-4">Büyülü Yolculuğunuza Başlayın</h2>
-          <p className="text-white mb-6">Gizem dolu dünyamızda size rehberlik etmekten mutluluk duyuyoruz. Büyünün sırlarını keşfedin, kendi gücünüzü ortaya çıkarın!</p>
-          <Button asChild size="lg" className="bg-white text-purple-600 hover:bg-purple-100">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Büyülü Yolculuğunuza Başlayın</h2>
+          <p className="text-gray-600 mb-6">Gizem dolu dünyamızda size rehberlik etmekten mutluluk duyuyoruz. Büyünün sırlarını keşfedin, kendi gücünüzü ortaya çıkarın!</p>
+          <Button asChild size="lg" className="bg-primary text-white hover:bg-primary/90">
             <Link to="/buyu-testi">Hemen Büyü Testine Başla</Link>
           </Button>
         </div>
