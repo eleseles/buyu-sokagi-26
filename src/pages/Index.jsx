@@ -2,10 +2,16 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { motion } from 'framer-motion';
-import { Star, Zap, Shield, Book, Users, Sparkles, Moon, Sun } from 'lucide-react';
+import { Star, Zap, Shield, Book, Users, Sparkles, Moon, Sun, Wand2, Heart, Compass } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
-const FeatureCard = ({ icon: Icon, title, description }) => (
+const FeatureCard = ({ icon: Icon, title, description, to }) => (
   <motion.div
     className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg text-center"
     whileHover={{ scale: 1.05, rotate: 1 }}
@@ -13,29 +19,67 @@ const FeatureCard = ({ icon: Icon, title, description }) => (
   >
     <Icon className="w-12 h-12 mx-auto mb-4 text-purple-600 dark:text-purple-400" />
     <h3 className="text-xl font-semibold mb-2 text-purple-700 dark:text-purple-300">{title}</h3>
-    <p className="text-gray-600 dark:text-gray-400">{description}</p>
+    <p className="text-gray-600 dark:text-gray-400 mb-4">{description}</p>
+    <Button asChild variant="outline">
+      <Link to={to}>Keşfet</Link>
+    </Button>
   </motion.div>
 );
 
 const Index = () => {
   const { theme, setTheme } = useTheme();
   const features = [
-    { icon: Star, title: "Büyü Testi", description: "Üzerinizdeki büyüyü keşfedin" },
-    { icon: Book, title: "Büyü Türleri", description: "Farklı büyü çeşitlerini öğrenin" },
-    { icon: Sparkles, title: "Günlük Tavsiyeler", description: "Büyülü ipuçları alın" },
-    { icon: Shield, title: "Koruma Büyüleri", description: "Kendinizi negatif enerjilerden koruyun" },
-    { icon: Zap, title: "Güç Büyüleri", description: "İçinizdeki gücü ortaya çıkarın" },
-    { icon: Users, title: "Topluluk", description: "Diğer büyücülerle bağlantı kurun" },
+    { icon: Star, title: "Büyü Testi", description: "Üzerinizdeki büyüyü keşfedin", to: "/buyu-testi" },
+    { icon: Book, title: "Büyü Türleri", description: "Farklı büyü çeşitlerini öğrenin", to: "/buyu-turleri" },
+    { icon: Sparkles, title: "Günlük Tavsiyeler", description: "Büyülü ipuçları alın", to: "/gunluk-tavsiyeler" },
+    { icon: Shield, title: "Büyü Bozma", description: "Kendinizi negatif enerjilerden koruyun", to: "/buyu-bozma" },
+    { icon: Wand2, title: "Büyü Yapımı", description: "Kendi büyülerinizi nasıl yapacağınızı öğrenin", to: "/buyu-yapimi" },
+    { icon: Users, title: "Kullanıcı Deneyimleri", description: "Diğer büyücülerin hikayelerini okuyun", to: "/kullanici-deneyimleri" },
   ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 dark:from-purple-900 dark:via-pink-900 dark:to-red-900 transition-colors duration-500">
       <header className="py-6 px-4 bg-white dark:bg-gray-800 bg-opacity-10 backdrop-blur-md">
         <nav className="container mx-auto flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-white dark:text-purple-300">BüyüDünyası</h1>
+          <Link to="/" className="text-3xl font-bold text-white dark:text-purple-300">BüyüDünyası</Link>
           <div className="space-x-4 flex items-center">
-            <Link to="/buyu-testi" className="text-white dark:text-purple-300 hover:text-purple-200 transition-colors">Büyü Testi</Link>
-            <Link to="/buyu-turleri" className="text-white dark:text-purple-300 hover:text-purple-200 transition-colors">Büyü Türleri</Link>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">Menü</Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem>
+                  <Link to="/buyu-testi">Büyü Testi</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link to="/buyu-turleri">Büyü Türleri</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link to="/buyu-belirtileri">Büyü Belirtileri</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link to="/buyu-yapimi">Büyü Yapımı</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link to="/buyu-dualari">Büyü Duaları</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link to="/buyu-bozma">Büyü Bozma</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link to="/buyu-kitabi">Büyü Kitabı</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link to="/kullanici-deneyimleri">Kullanıcı Deneyimleri</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link to="/astroloji-ve-buyu">Astroloji ve Büyü</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link to="/gunluk-tavsiyeler">Günlük Tavsiyeler</Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <Button asChild variant="secondary" className="bg-purple-600 text-white hover:bg-purple-700 transition-colors">
               <Link to="/uye-ol">Üye Ol</Link>
             </Button>
