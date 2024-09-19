@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from 'framer-motion';
-import { Zodiac, Star, Moon, Sun, Sparkles } from 'lucide-react';
+import { Compass, Star, Moon, Sun, Sparkles } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
 const AstrolojiveBuyu = () => {
@@ -66,7 +66,7 @@ const AstrolojiveBuyu = () => {
                       <CardHeader>
                         <CardTitle className="flex items-center justify-between">
                           <span>{burc.isim} Burcu ve Büyü</span>
-                          <Zodiac className="w-8  h-8" />
+                          <Compass className="w-8 h-8" />
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
