@@ -3,22 +3,33 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { motion } from 'framer-motion';
-import { Sun, Moon, Star, Calendar, Clock, MapPin } from 'lucide-react';
+import { Sun, Moon, Star, Calendar, Clock, MapPin, Heart, Activity, Compass } from 'lucide-react';
+import NatalChart from '../components/NatalChart';
+import PlanetInterpretations from '../components/PlanetInterpretations';
+import AspectInterpretations from '../components/AspectInterpretations';
+import LifePathCalculator from '../components/LifePathCalculator';
+import CompatibilityChecker from '../components/CompatibilityChecker';
 
 const DogumHaritasi = () => {
-  const [dogumTarihi, setDogumTarihi] = useState('');
-  const [dogumSaati, setDogumSaati] = useState('');
-  const [dogumYeri, setDogumYeri] = useState('');
-  const [harita, setHarita] = useState(null);
+  const [birthData, setBirthData] = useState({
+    date: '',
+    time: '',
+    place: '',
+  });
+  const [chartData, setChartData] = useState(null);
 
-  const hesaplaHarita = () => {
-    // Burada gerçek bir doğum haritası hesaplama algoritması olmalı
-    // Şimdilik basit bir örnek gösteriyoruz
-    setHarita({
-      gunesBurcu: "Aslan",
-      ayBurcu: "Yengeç",
-      yukselen: "İkizler",
-      // Diğer gezegenler ve evler burada olmalı
+  const handleInputChange = (e) => {
+    setBirthData({ ...birthData, [e.target.name]: e.target.value });
+  };
+
+  const calculateChart = () => {
+    // In a real application, this would call an astrology API
+    // For demonstration, we'll use placeholder data
+    setChartData({
+      sun: { sign: 'Leo', house: 5 },
+      moon: { sign: 'Cancer', house: 4 },
+      ascendant: 'Libra',
+      // Add more planetary positions here
     });
   };
 
@@ -31,9 +42,9 @@ const DogumHaritasi = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          Doğum Haritası Hesaplama ve Yorumlama
+          Ücretsiz Doğum Haritası
         </motion.h1>
-        <Card className="bg-white bg-opacity-10 backdrop-blur-md max-w-2xl mx-auto">
+        <Card className="bg-white bg-opacity-10 backdrop-blur-md max-w-2xl mx-auto mb-8">
           <CardHeader>
             <CardTitle className="text-2xl text-center text-white">Doğum Bilgilerinizi Girin</CardTitle>
           </CardHeader>
@@ -43,8 +54,9 @@ const DogumHaritasi = () => {
                 <Calendar className="text-white" />
                 <Input
                   type="date"
-                  value={dogumTarihi}
-                  onChange={(e) => setDogumTarihi(e.target.value)}
+                  name="date"
+                  value={birthData.date}
+                  onChange={handleInputChange}
                   className="bg-purple-800 bg-opacity-30 text-white placeholder-purple-300"
                   placeholder="Doğum Tarihi"
                 />
@@ -53,8 +65,9 @@ const DogumHaritasi = () => {
                 <Clock className="text-white" />
                 <Input
                   type="time"
-                  value={dogumSaati}
-                  onChange={(e) => setDogumSaati(e.target.value)}
+                  name="time"
+                  value={birthData.time}
+                  onChange={handleInputChange}
                   className="bg-purple-800 bg-opacity-30 text-white placeholder-purple-300"
                   placeholder="Doğum Saati"
                 />
@@ -63,46 +76,56 @@ const DogumHaritasi = () => {
                 <MapPin className="text-white" />
                 <Input
                   type="text"
-                  value={dogumYeri}
-                  onChange={(e) => setDogumYeri(e.target.value)}
+                  name="place"
+                  value={birthData.place}
+                  onChange={handleInputChange}
                   className="bg-purple-800 bg-opacity-30 text-white placeholder-purple-300"
                   placeholder="Doğum Yeri"
                 />
               </div>
-              <Button onClick={hesaplaHarita} className="w-full bg-purple-600 hover:bg-purple-700 text-white">
+              <Button onClick={calculateChart} className="w-full bg-purple-600 hover:bg-purple-700 text-white">
                 Doğum Haritamı Hesapla
               </Button>
             </div>
-            {harita && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="mt-8 p-4 bg-purple-800 bg-opacity-30 rounded-lg"
-              >
-                <h3 className="text-xl font-semibold mb-4 text-white">Doğum Haritanız:</h3>
-                <div className="grid grid-cols-2 gap-4 text-white">
-                  <div className="flex items-center">
-                    <Sun className="w-6 h-6 mr-2 text-yellow-300" />
-                    <span>Güneş Burcu: {harita.gunesBurcu}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <Moon className="w-6 h-6 mr-2 text-blue-300" />
-                    <span>Ay Burcu: {harita.ayBurcu}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <Star className="w-6 h-6 mr-2 text-purple-300" />
-                    <span>Yükselen: {harita.yukselen}</span>
-                  </div>
-                  {/* Diğer gezegenler ve evler burada listelenebilir */}
-                </div>
-                <p className="mt-4 text-purple-200">
-                  Bu doğum haritası, kişiliğinizin farklı yönlerini ve yaşam yolculuğunuzdaki potansiyel fırsatları ve zorlukları gösterir. Detaylı bir yorum için bir astroloğa danışmanızı öneririz.
-                </p>
-              </motion.div>
-            )}
           </CardContent>
         </Card>
+
+        {chartData && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Card className="bg-white bg-opacity-10 backdrop-blur-md max-w-4xl mx-auto mb-8">
+              <CardHeader>
+                <CardTitle className="text-2xl text-center text-white">Natal Haritanız</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <NatalChart chartData={chartData} />
+                <PlanetInterpretations chartData={chartData} />
+                <AspectInterpretations chartData={chartData} />
+              </CardContent>
+            </Card>
+
+            <Card className="bg-white bg-opacity-10 backdrop-blur-md max-w-4xl mx-auto mb-8">
+              <CardHeader>
+                <CardTitle className="text-2xl text-center text-white">Yaşam Yolu Sayınız</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <LifePathCalculator birthDate={birthData.date} />
+              </CardContent>
+            </Card>
+
+            <Card className="bg-white bg-opacity-10 backdrop-blur-md max-w-4xl mx-auto mb-8">
+              <CardHeader>
+                <CardTitle className="text-2xl text-center text-white">Uyumluluk Kontrolü</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CompatibilityChecker yourChart={chartData} />
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
       </div>
     </div>
   );
