@@ -2,11 +2,15 @@ import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { motion } from 'framer-motion';
-import { Wand2, Sparkles, Heart, Coins, Shield, Zap } from 'lucide-react';
+import { Wand2, Sparkles, Heart, Coins, Shield, Zap, Moon, Sun, Feather } from 'lucide-react';
+import { useToast } from "@/components/ui/use-toast";
 
 const BuyuYapimi = () => {
   const [selectedBuyu, setSelectedBuyu] = useState(null);
+  const [customIngredient, setCustomIngredient] = useState('');
+  const { toast } = useToast();
 
   const buyuTurleri = [
     {
@@ -81,6 +85,22 @@ const BuyuYapimi = () => {
     }
   ];
 
+  const handleCustomIngredient = () => {
+    if (customIngredient.trim() !== '' && selectedBuyu) {
+      const updatedBuyu = {
+        ...selectedBuyu,
+        malzemeler: [...selectedBuyu.malzemeler, customIngredient]
+      };
+      setSelectedBuyu(updatedBuyu);
+      setCustomIngredient('');
+      toast({
+        title: "Malzeme Eklendi",
+        description: `${customIngredient} başarıyla eklendi.`,
+        duration: 3000,
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-600 via-pink-500 to-red-500 py-12">
       <div className="container mx-auto px-4">
@@ -152,6 +172,18 @@ const BuyuYapimi = () => {
                     <li key={index}>{malzeme}</li>
                   ))}
                 </ul>
+                <div className="flex space-x-2 mb-4">
+                  <Input
+                    type="text"
+                    placeholder="Özel malzeme ekle"
+                    value={customIngredient}
+                    onChange={(e) => setCustomIngredient(e.target.value)}
+                    className="bg-purple-800 bg-opacity-30 text-white placeholder-purple-300"
+                  />
+                  <Button onClick={handleCustomIngredient} className="bg-purple-600 hover:bg-purple-700 text-white">
+                    Ekle
+                  </Button>
+                </div>
                 <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white">
                   Malzemeleri Sipariş Et
                 </Button>

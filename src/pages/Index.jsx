@@ -48,6 +48,7 @@ const Index = () => {
   const { theme, setTheme } = useTheme();
   const [dailyTarot, setDailyTarot] = useState(null);
   const [dailyHoroscope, setDailyHoroscope] = useState(null);
+  const [activeSpell, setActiveSpell] = useState(null);
 
   useEffect(() => {
     // Simüle edilmiş API çağrıları
@@ -81,6 +82,10 @@ const Index = () => {
     { name: "Ayşe K.", content: "Bu site sayesinde hayatım değişti. Artık her gün daha fazla umut ve pozitif enerji ile doluyum." },
     { name: "Mehmet Y.", content: "Büyü yapımı konusundaki detaylı rehberler gerçekten çok faydalı. Teşekkürler BüyüDünyası!" },
   ];
+
+  const handleSpellClick = (spell) => {
+    setActiveSpell(spell);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 dark:from-purple-900 dark:via-pink-900 dark:to-red-900 transition-colors duration-500">
@@ -140,9 +145,26 @@ const Index = () => {
           <h2 className="text-3xl font-bold mb-8 text-center text-white dark:text-purple-300">Popüler Büyü Türleri</h2>
           <div className="grid md:grid-cols-3 gap-8">
             {popularSpells.map((spell, index) => (
-              <PopularSpellCard key={index} {...spell} />
+              <motion.div
+                key={index}
+                whileHover={{ scale: 1.05 }}
+                onClick={() => handleSpellClick(spell)}
+              >
+                <PopularSpellCard {...spell} />
+              </motion.div>
             ))}
           </div>
+          {activeSpell && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-8 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg"
+            >
+              <h3 className="text-xl font-bold mb-2 text-purple-600 dark:text-purple-400">{activeSpell.title} Hakkında</h3>
+              <p className="text-gray-600 dark:text-gray-400">{activeSpell.description}</p>
+              <Button className="mt-4" onClick={() => setActiveSpell(null)}>Kapat</Button>
+            </motion.div>
+          )}
         </section>
 
         <section className="mb-16">

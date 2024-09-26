@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { motion, AnimatePresence } from 'framer-motion';
-import { Star, AlertTriangle, Moon, Volume2, Zap, Heart, Shield, Sparkles } from 'lucide-react';
+import { Star, AlertTriangle, Moon, Volume2, Zap, Heart, Shield, Sparkles, Clock } from 'lucide-react';
+import confetti from 'canvas-confetti';
 
 const BuyuTesti = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState([]);
   const [result, setResult] = useState(null);
+  const [timeLeft, setTimeLeft] = useState(30);
+  const [testStarted, setTestStarted] = useState(false);
 
   const questions = [
     {
@@ -53,12 +56,28 @@ const BuyuTesti = () => {
     }
   ];
 
+  useEffect(() => {
+    let timer;
+    if (testStarted && timeLeft > 0 && currentQuestion < questions.length) {
+      timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+    } else if (timeLeft === 0) {
+      handleAnswer(questions[currentQuestion].options[2]); // En olumsuz cevabı seç
+    }
+    return () => clearTimeout(timer);
+  }, [timeLeft, testStarted, currentQuestion]);
+
+  const startTest = () => {
+    setTestStarted(true);
+    setTimeLeft(30);
+  };
+
   const handleAnswer = (answer) => {
     const newAnswers = [...answers, answer];
     setAnswers(newAnswers);
 
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
+      setTimeLeft(30);
     } else {
       calculateResult(newAnswers);
     }
@@ -76,6 +95,11 @@ const BuyuTesti = () => {
         text: "Büyü etkisi altında olma ihtimaliniz çok yüksek. Acilen bir uzmana danışmanızı öneririz.",
         icon: AlertTriangle,
         color: "text-red-500"
+      });
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
       });
     } else if (score >= 6) {
       setResult({
@@ -100,7 +124,18 @@ const BuyuTesti = () => {
             <CardTitle className="text-3xl text-center text-white">Bende Büyü Var Mı? Testi</CardTitle>
           </CardHeader>
           <CardContent>
-            {result ? (
+            {!testStarted ? (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-center"
+              >
+                <p className="text-lg mb-6 text-purple-100">Bu test, üzerinizdeki olası büyü etkilerini belirlemenize yardımcı olacaktır. Başlamaya hazır mısınız?</p>
+                <Button onClick={startTest} className="bg-purple-600 hover:bg-purple-700 text-white">
+                  Testi Başlat
+                </Button>
+              </motion.div>
+            ) : result ? (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -118,7 +153,13 @@ const BuyuTesti = () => {
               </motion.div>
             ) : (
               <>
-                <Progress value={(currentQuestion / questions.length) * 100} className="mb-6" />
+                <div className="flex justify-between items-center mb-4">
+                  <Progress value={(currentQuestion / questions.length) * 100} className="w-2/3" />
+                  <div className="flex items-center">
+                    <Clock className="w-5 h-5 mr-2 text-purple-200" />
+                    <span className="text-purple-200">{timeLeft}s</span>
+                  </div>
+                </div>
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={currentQuestion}

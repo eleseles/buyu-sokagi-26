@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { motion } from 'framer-motion';
-import { Heart, Star, Shield, Zap, Moon } from 'lucide-react';
+import { Heart, Star, Shield, Zap, Moon, Volume2 } from 'lucide-react';
+import { useToast } from "@/components/ui/use-toast";
 
 const BuyuDualari = () => {
   const [customDua, setCustomDua] = useState('');
@@ -45,6 +46,9 @@ const BuyuDualari = () => {
     }
   ]);
 
+  const { toast } = useToast();
+  const audioRef = useRef(null);
+
   const handleCustomDuaSubmit = (e) => {
     e.preventDefault();
     if (customDua.trim() !== '') {
@@ -56,6 +60,25 @@ const BuyuDualari = () => {
         rituel: "Bu duayı kendi ritüelinizle birlikte uygulayın."
       }]);
       setCustomDua('');
+      toast({
+        title: "Yeni Dua Eklendi",
+        description: "Özel duanız başarıyla eklendi.",
+        duration: 3000,
+      });
+    }
+  };
+
+  const playAudio = (content) => {
+    if ('speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance(content);
+      utterance.lang = 'tr-TR';
+      speechSynthesis.speak(utterance);
+    } else {
+      toast({
+        title: "Hata",
+        description: "Tarayıcınız ses özelliğini desteklemiyor.",
+        duration: 3000,
+      });
     }
   };
 
@@ -89,7 +112,14 @@ const BuyuDualari = () => {
                     <h3 className="text-xl font-semibold text-white">{dua.title}</h3>
                   </div>
                   <p className="text-purple-100 italic mb-2">"{dua.content}"</p>
-                  <p className="text-sm text-purple-200">Ritüel: {dua.rituel}</p>
+                  <p className="text-sm text-purple-200 mb-2">Ritüel: {dua.rituel}</p>
+                  <Button 
+                    onClick={() => playAudio(dua.content)}
+                    className="w-full bg-purple-600 hover:bg-purple-700 text-white flex items-center justify-center"
+                  >
+                    <Volume2 className="w-4 h-4 mr-2" />
+                    Sesli Dinle
+                  </Button>
                 </motion.div>
               ))}
             </div>
@@ -128,6 +158,7 @@ const BuyuDualari = () => {
           </Button>
         </motion.div>
       </div>
+      <audio ref={audioRef} />
     </div>
   );
 };

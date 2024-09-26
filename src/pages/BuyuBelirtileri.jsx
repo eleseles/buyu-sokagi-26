@@ -4,10 +4,12 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AlertCircle, Zap, Cloud, Frown, Brain, Heart, Moon, Battery } from 'lucide-react';
+import { AlertCircle, Zap, Cloud, Frown, Brain, Heart, Moon, Battery, Eye, Compass, Feather } from 'lucide-react';
+import { useToast } from "@/components/ui/use-toast";
 
 const BuyuBelirtileri = () => {
   const [selectedTab, setSelectedTab] = useState("fiziksel");
+  const { toast } = useToast();
 
   const belirtiler = {
     fiziksel: [
@@ -15,18 +17,21 @@ const BuyuBelirtileri = () => {
       { icon: <Cloud className="w-6 h-6 text-blue-500" />, belirti: "Açıklanamayan baş ağrıları" },
       { icon: <Frown className="w-6 h-6 text-red-500" />, belirti: "Ani kilo değişimleri" },
       { icon: <AlertCircle className="w-6 h-6 text-orange-500" />, belirti: "Cilt problemleri ve döküntüler" },
+      { icon: <Eye className="w-6 h-6 text-purple-500" />, belirti: "Göz seğirmesi veya bulanık görme" },
     ],
     zihinsel: [
       { icon: <Brain className="w-6 h-6 text-purple-500" />, belirti: "Konsantrasyon güçlüğü" },
       { icon: <Moon className="w-6 h-6 text-indigo-500" />, belirti: "Sık sık kabuslar görme" },
       { icon: <Zap className="w-6 h-6 text-yellow-500" />, belirti: "Ani ruh hali değişimleri" },
       { icon: <AlertCircle className="w-6 h-6 text-orange-500" />, belirti: "Açıklanamayan korkular ve endişeler" },
+      { icon: <Compass className="w-6 h-6 text-green-500" />, belirti: "Sürekli kafa karışıklığı ve yön duygusunu kaybetme" },
     ],
     duygusal: [
       { icon: <Heart className="w-6 h-6 text-red-500" />, belirti: "İlişkilerde sürekli sorunlar yaşama" },
       { icon: <Battery className="w-6 h-6 text-green-500" />, belirti: "Duygusal tükenme hissi" },
       { icon: <Cloud className="w-6 h-6 text-blue-500" />, belirti: "Sürekli negatif düşünceler" },
       { icon: <Frown className="w-6 h-6 text-red-500" />, belirti: "Açıklanamayan öfke patlamaları" },
+      { icon: <Feather className="w-6 h-6 text-pink-500" />, belirti: "Aşırı hassasiyet ve duygusallık" },
     ],
   };
 
@@ -47,7 +52,7 @@ const BuyuBelirtileri = () => {
     const yuzde = (seciliBelitiSayisi / toplamBelirti) * 100;
 
     if (yuzde >= 75) {
-      setTestSonucu("Yüksek ihtimalle büyü etkisi altında olabilirsiniz. Bir uzmana danışmanızı öneririz.");
+      setTestSonucu("Yüksek ihtimalle büyü etkisi altında olabilirsiniz.  Bir uzmana danışmanızı öneririz.");
     } else if (yuzde >= 50) {
       setTestSonucu("Orta düzeyde büyü etkisi belirtileri gösteriyorsunuz. Önlem almanızda fayda var.");
     } else if (yuzde >= 25) {
@@ -55,6 +60,12 @@ const BuyuBelirtileri = () => {
     } else {
       setTestSonucu("Büyü etkisi altında olma ihtimaliniz düşük görünüyor.");
     }
+
+    toast({
+      title: "Test Sonucu Hazır!",
+      description: "Sonucunuzu görmek için aşağı kaydırın.",
+      duration: 3000,
+    });
   };
 
   return (
