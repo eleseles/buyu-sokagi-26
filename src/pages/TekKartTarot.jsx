@@ -1,21 +1,26 @@
 import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const TekKartTarot = () => {
   const [selectedCard, setSelectedCard] = useState(null);
+  const [isFlipped, setIsFlipped] = useState(false);
 
   const tarotCards = [
-    { name: "The Fool", meaning: "New beginnings, innocence, spontaneity" },
-    { name: "The Magician", meaning: "Manifestation, resourcefulness, power" },
-    { name: "The High Priestess", meaning: "Intuition, sacred knowledge, divine feminine" },
-    // Add more cards here
+    { name: "The Fool", meaning: "Yeni başlangıçlar, masumiyet, spontanlık", image: "/images/tarot/fool.jpg" },
+    { name: "The Magician", meaning: "Yaratıcılık, beceri, irade gücü", image: "/images/tarot/magician.jpg" },
+    { name: "The High Priestess", meaning: "Sezgi, bilinçaltı, gizem", image: "/images/tarot/high-priestess.jpg" },
+    { name: "The Empress", meaning: "Bereket, annelik, doğa", image: "/images/tarot/empress.jpg" },
+    { name: "The Emperor", meaning: "Otorite, yapı, liderlik", image: "/images/tarot/emperor.jpg" },
+    // Daha fazla kart eklenebilir
   ];
 
   const selectRandomCard = () => {
+    setIsFlipped(false);
     const randomIndex = Math.floor(Math.random() * tarotCards.length);
     setSelectedCard(tarotCards[randomIndex]);
+    setTimeout(() => setIsFlipped(true), 500);
   };
 
   return (
@@ -34,19 +39,36 @@ const TekKartTarot = () => {
             <CardTitle className="text-2xl text-center text-white">Günlük Tarot Kartınız</CardTitle>
           </CardHeader>
           <CardContent className="text-center">
-            {selectedCard ? (
+            <AnimatePresence mode="wait">
+              {selectedCard && (
+                <motion.div
+                  key={selectedCard.name}
+                  initial={{ rotateY: 0 }}
+                  animate={{ rotateY: isFlipped ? 180 : 0 }}
+                  exit={{ rotateY: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="relative w-64 h-96 mx-auto mb-4"
+                >
+                  <div className="absolute w-full h-full backface-hidden">
+                    <img src="/images/tarot/card-back.jpg" alt="Tarot card back" className="w-full h-full object-cover rounded-lg" />
+                  </div>
+                  <div className="absolute w-full h-full backface-hidden" style={{ transform: 'rotateY(180deg)' }}>
+                    <img src={selectedCard.image} alt={selectedCard.name} className="w-full h-full object-cover rounded-lg" />
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+            {isFlipped && selectedCard && (
               <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 0.5 }}
               >
                 <h3 className="text-xl font-bold text-purple-100 mb-2">{selectedCard.name}</h3>
                 <p className="text-purple-200 mb-4">{selectedCard.meaning}</p>
               </motion.div>
-            ) : (
-              <p className="text-purple-100 mb-4">Kartınızı çekmek için butona tıklayın.</p>
             )}
-            <Button onClick={selectRandomCard}>
+            <Button onClick={selectRandomCard} className="bg-purple-600 hover:bg-purple-700 text-white">
               {selectedCard ? "Yeni Kart Çek" : "Kart Çek"}
             </Button>
           </CardContent>

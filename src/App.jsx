@@ -18,6 +18,7 @@ import TarotFali from "./pages/TarotFali";
 import TekKartTarot from "./pages/TekKartTarot";
 import UcKartTarot from "./pages/UcKartTarot";
 import TarotKartlariAnlamlari from "./pages/TarotKartlariAnlamlari";
+import DogumHaritasi from "./pages/DogumHaritasi";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,7 @@ const App = () => (
             <Route path="/tarot-fali/tek-kart" element={<TekKartTarot />} />
             <Route path="/tarot-fali/uc-kart" element={<UcKartTarot />} />
             <Route path="/tarot-fali/kartlar-ve-anlamlari" element={<TarotKartlariAnlamlari />} />
+            <Route path="/dogum-haritasi" element={<DogumHaritasi />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
