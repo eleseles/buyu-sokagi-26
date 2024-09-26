@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { motion } from 'framer-motion';
-import { Star, Zap, Shield, Book, Users, Sparkles, Moon, Sun, Wand2, Heart, Compass } from 'lucide-react';
+import { Star, Zap, Shield, Book, Users, Sparkles, Moon, Sun, Wand2, Heart, Compass, Coffee } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
 const FeatureCard = ({ icon: Icon, title, description, to }) => (
@@ -20,8 +21,47 @@ const FeatureCard = ({ icon: Icon, title, description, to }) => (
   </motion.div>
 );
 
+const PopularSpellCard = ({ title, description, icon: Icon }) => (
+  <Card className="bg-white dark:bg-gray-800">
+    <CardHeader>
+      <CardTitle className="flex items-center">
+        <Icon className="w-6 h-6 mr-2 text-purple-600 dark:text-purple-400" />
+        {title}
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
+      <p className="text-gray-600 dark:text-gray-400">{description}</p>
+    </CardContent>
+  </Card>
+);
+
+const Testimonial = ({ name, content }) => (
+  <Card className="bg-white dark:bg-gray-800">
+    <CardContent className="pt-6">
+      <p className="text-gray-600 dark:text-gray-400 italic mb-4">"{content}"</p>
+      <p className="text-right font-semibold text-purple-600 dark:text-purple-400">- {name}</p>
+    </CardContent>
+  </Card>
+);
+
 const Index = () => {
   const { theme, setTheme } = useTheme();
+  const [dailyTarot, setDailyTarot] = useState(null);
+  const [dailyHoroscope, setDailyHoroscope] = useState(null);
+
+  useEffect(() => {
+    // Simüle edilmiş API çağrıları
+    setDailyTarot({
+      name: "The Star",
+      meaning: "Umut, ilham ve yenilenme zamanı.",
+      icon: Star
+    });
+    setDailyHoroscope({
+      sign: "Koç",
+      prediction: "Bugün yeni fırsatlarla karşılaşabilirsiniz. İnisiyatif almaktan çekinmeyin."
+    });
+  }, []);
+
   const features = [
     { icon: Star, title: "Büyü Testi", description: "Üzerinizdeki büyüyü keşfedin", to: "/buyu-testi" },
     { icon: Book, title: "Büyü Türleri", description: "Farklı büyü çeşitlerini öğrenin", to: "/buyu-turleri" },
@@ -29,6 +69,17 @@ const Index = () => {
     { icon: Shield, title: "Büyü Bozma", description: "Kendinizi negatif enerjilerden koruyun", to: "/buyu-bozma" },
     { icon: Wand2, title: "Büyü Yapımı", description: "Kendi büyülerinizi nasıl yapacağınızı öğrenin", to: "/buyu-yapimi" },
     { icon: Users, title: "Kullanıcı Deneyimleri", description: "Diğer büyücülerin hikayelerini okuyun", to: "/kullanici-deneyimleri" },
+  ];
+
+  const popularSpells = [
+    { title: "Aşk Büyüsü", description: "Aşk hayatınızı canlandırın", icon: Heart },
+    { title: "Bereket Büyüsü", description: "Bolluğu hayatınıza çekin", icon: Coffee },
+    { title: "Koruma Büyüsü", description: "Kendinizi negatif enerjilerden koruyun", icon: Shield },
+  ];
+
+  const testimonials = [
+    { name: "Ayşe K.", content: "Bu site sayesinde hayatım değişti. Artık her gün daha fazla umut ve pozitif enerji ile doluyum." },
+    { name: "Mehmet Y.", content: "Büyü yapımı konusundaki detaylı rehberler gerçekten çok faydalı. Teşekkürler BüyüDünyası!" },
   ];
 
   return (
@@ -62,13 +113,65 @@ const Index = () => {
           </motion.div>
         </section>
 
+        <section className="mb-16">
+          <h2 className="text-3xl font-bold mb-8 text-center text-white dark:text-purple-300">Günün Tarot Kartı</h2>
+          {dailyTarot && (
+            <Card className="bg-white dark:bg-gray-800 max-w-md mx-auto">
+              <CardHeader>
+                <CardTitle className="flex items-center justify-center">
+                  <dailyTarot.icon className="w-12 h-12 mr-4 text-purple-600 dark:text-purple-400" />
+                  {dailyTarot.name}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-center text-gray-600 dark:text-gray-400">{dailyTarot.meaning}</p>
+              </CardContent>
+            </Card>
+          )}
+        </section>
+
         <section className="grid md:grid-cols-3 gap-8 mb-16">
           {features.map((feature, index) => (
             <FeatureCard key={index} {...feature} />
           ))}
         </section>
 
-        <section className="text-center mb-16 bg-white dark:bg-gray-800 bg-opacity-10 backdrop-blur-md p-8 rounded-lg">
+        <section className="mb-16">
+          <h2 className="text-3xl font-bold mb-8 text-center text-white dark:text-purple-300">Popüler Büyü Türleri</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {popularSpells.map((spell, index) => (
+              <PopularSpellCard key={index} {...spell} />
+            ))}
+          </div>
+        </section>
+
+        <section className="mb-16">
+          <h2 className="text-3xl font-bold mb-8 text-center text-white dark:text-purple-300">Kullanıcı Deneyimleri</h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <Testimonial key={index} {...testimonial} />
+            ))}
+          </div>
+        </section>
+
+        <section className="mb-16">
+          <h2 className="text-3xl font-bold mb-8 text-center text-white dark:text-purple-300">Günlük Burç Yorumu</h2>
+          {dailyHoroscope && (
+            <Card className="bg-white dark:bg-gray-800 max-w-md mx-auto">
+              <CardHeader>
+                <CardTitle className="flex items-center justify-center">
+                  <Sun className="w-8 h-8 mr-2 text-purple-600 dark:text-purple-400" />
+                  {dailyHoroscope.sign} Burcu
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-center text-gray-600 dark:text-gray-400">{dailyHoroscope.prediction}</p>
+              </CardContent>
+            </Card>
+          )}
+        </section>
+
+        <section className="text-center bg-white dark:bg-gray-800 bg-opacity-10 backdrop-blur-md p-8 rounded-lg mb-16">
           <h2 className="text-4xl font-bold mb-4 text-white dark:text-purple-300">Neden BüyüDünyası?</h2>
           <div className="grid md:grid-cols-2 gap-8">
             <motion.div className="text-left" whileHover={{ scale: 1.05 }}>
