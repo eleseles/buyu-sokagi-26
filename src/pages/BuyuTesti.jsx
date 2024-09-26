@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { motion, AnimatePresence } from 'framer-motion';
-import { Star, AlertTriangle, Moon, Volume2, Zap, Heart, Shield, Sparkles, Clock } from 'lucide-react';
-import confetti from 'canvas-confetti';
+import { motion, AnimatePresence } from "framer-motion";
+import { Star, AlertTriangle, Moon, Volume2, Zap, Heart, Shield, Sparkles, Clock } from "lucide-react";
+import confetti from "canvas-confetti";
 
 const BuyuTesti = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -61,7 +61,7 @@ const BuyuTesti = () => {
     if (testStarted && timeLeft > 0 && currentQuestion < questions.length) {
       timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
     } else if (timeLeft === 0) {
-      handleAnswer(questions[currentQuestion].options[2]); // En olumsuz cevabı seç
+      handleAnswer(questions[currentQuestion].options[2]);
     }
     return () => clearTimeout(timer);
   }, [timeLeft, testStarted, currentQuestion]);
