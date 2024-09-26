@@ -52,16 +52,16 @@ const Menu = () => {
               <Link to="/tarot-fali">Tarot Falı</Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Link to="/tarot-fali/tek-kart">Tek Kart Tarot</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link to="/tarot-fali/uc-kart">Üç Kart Tarot Falı</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link to="/tarot-fali/kartlar-ve-anlamlari">Tarot Kartları ve Anlamları</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
               <Link to="/dogum-haritasi">Doğum Haritası</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link to="/blog">Blog</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link to="/uye-ol">Üye Ol</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link to="/uye-girisi">Üye Girişi</Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
