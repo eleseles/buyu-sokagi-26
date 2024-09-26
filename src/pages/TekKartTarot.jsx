@@ -2,18 +2,20 @@ import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from 'framer-motion';
+import { Sun, Moon, Star, Heart, Zap, Shield, Sparkles } from 'lucide-react';
 
 const TekKartTarot = () => {
   const [selectedCard, setSelectedCard] = useState(null);
   const [isFlipped, setIsFlipped] = useState(false);
 
   const tarotCards = [
-    { name: "The Fool", meaning: "Yeni başlangıçlar, masumiyet, spontanlık", image: "/images/tarot/fool.jpg" },
-    { name: "The Magician", meaning: "Yaratıcılık, beceri, irade gücü", image: "/images/tarot/magician.jpg" },
-    { name: "The High Priestess", meaning: "Sezgi, bilinçaltı, gizem", image: "/images/tarot/high-priestess.jpg" },
-    { name: "The Empress", meaning: "Bereket, annelik, doğa", image: "/images/tarot/empress.jpg" },
-    { name: "The Emperor", meaning: "Otorite, yapı, liderlik", image: "/images/tarot/emperor.jpg" },
-    // Daha fazla kart eklenebilir
+    { name: "The Sun", meaning: "Başarı, mutluluk, pozitif enerji", icon: Sun, color: "text-yellow-500" },
+    { name: "The Moon", meaning: "Sezgiler, bilinçaltı, gizem", icon: Moon, color: "text-blue-300" },
+    { name: "The Star", meaning: "Umut, ilham, rehberlik", icon: Star, color: "text-purple-300" },
+    { name: "The Lovers", meaning: "Aşk, uyum, ilişkiler", icon: Heart, color: "text-red-500" },
+    { name: "The Tower", meaning: "Ani değişim, yıkım, yeniden yapılanma", icon: Zap, color: "text-orange-500" },
+    { name: "The Hermit", meaning: "İçe dönüş, yalnızlık, bilgelik arayışı", icon: Shield, color: "text-green-500" },
+    { name: "The Magician", meaning: "Yaratıcılık, beceri, irade gücü", icon: Sparkles, color: "text-indigo-500" },
   ];
 
   const selectRandomCard = () => {
@@ -49,11 +51,11 @@ const TekKartTarot = () => {
                   transition={{ duration: 0.5 }}
                   className="relative w-64 h-96 mx-auto mb-4"
                 >
-                  <div className="absolute w-full h-full backface-hidden">
-                    <img src="/images/tarot/card-back.jpg" alt="Tarot card back" className="w-full h-full object-cover rounded-lg" />
+                  <div className="absolute w-full h-full backface-hidden bg-purple-800 rounded-lg flex items-center justify-center">
+                    <Star className="w-32 h-32 text-yellow-300" />
                   </div>
-                  <div className="absolute w-full h-full backface-hidden" style={{ transform: 'rotateY(180deg)' }}>
-                    <img src={selectedCard.image} alt={selectedCard.name} className="w-full h-full object-cover rounded-lg" />
+                  <div className="absolute w-full h-full backface-hidden bg-purple-700 rounded-lg flex flex-col items-center justify-center" style={{ transform: 'rotateY(180deg)' }}>
+                    {React.createElement(selectedCard.icon, { className: `w-32 h-32 ${selectedCard.color} mb-4` })}
                   </div>
                 </motion.div>
               )}

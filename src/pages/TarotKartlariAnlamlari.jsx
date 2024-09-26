@@ -2,22 +2,22 @@ import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { motion } from 'framer-motion';
 import { Input } from "@/components/ui/input";
+import { Sun, Moon, Star, Heart, Zap, Shield, Sparkles, Compass, Feather, Eye } from 'lucide-react';
 
 const TarotKartlariAnlamlari = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const tarotCards = [
-    { name: "The Fool", meaning: "Yeni başlangıçlar, masumiyet, spontanlık", image: "/images/tarot/fool.jpg" },
-    { name: "The Magician", meaning: "Yaratıcılık, beceri, irade gücü", image: "/images/tarot/magician.jpg" },
-    { name: "The High Priestess", meaning: "Sezgi, bilinçaltı, gizem", image: "/images/tarot/high-priestess.jpg" },
-    { name: "The Empress", meaning: "Bereket, annelik, doğa", image: "/images/tarot/empress.jpg" },
-    { name: "The Emperor", meaning: "Otorite, yapı, liderlik", image: "/images/tarot/emperor.jpg" },
-    { name: "The Hierophant", meaning: "Gelenek, uyum, manevi rehberlik", image: "/images/tarot/hierophant.jpg" },
-    { name: "The Lovers", meaning: "Aşk, uyum, ilişkiler", image: "/images/tarot/lovers.jpg" },
-    { name: "The Chariot", meaning: "Kontrol, irade, başarı", image: "/images/tarot/chariot.jpg" },
-    { name: "Strength", meaning: "Cesaret, iç güç, sabır", image: "/images/tarot/strength.jpg" },
-    { name: "The Hermit", meaning: "İçe dönüş, yalnızlık, bilgelik arayışı", image: "/images/tarot/hermit.jpg" },
-    // Daha fazla kart eklenebilir
+    { name: "The Sun", meaning: "Başarı, mutluluk, pozitif enerji", icon: Sun, color: "text-yellow-500" },
+    { name: "The Moon", meaning: "Sezgiler, bilinçaltı, gizem", icon: Moon, color: "text-blue-300" },
+    { name: "The Star", meaning: "Umut, ilham, rehberlik", icon: Star, color: "text-purple-300" },
+    { name: "The Lovers", meaning: "Aşk, uyum, ilişkiler", icon: Heart, color: "text-red-500" },
+    { name: "The Tower", meaning: "Ani değişim, yıkım, yeniden yapılanma", icon: Zap, color: "text-orange-500" },
+    { name: "The Hermit", meaning: "İçe dönüş, yalnızlık, bilgelik arayışı", icon: Shield, color: "text-green-500" },
+    { name: "The Magician", meaning: "Yaratıcılık, beceri, irade gücü", icon: Sparkles, color: "text-indigo-500" },
+    { name: "The Fool", meaning: "Yeni başlangıçlar, spontanlık, macera", icon: Compass, color: "text-teal-500" },
+    { name: "The High Priestess", meaning: "Sezgi, gizli bilgi, bilinçaltı", icon: Eye, color: "text-pink-500" },
+    { name: "The Empress", meaning: "Bereket, annelik, doğa", icon: Feather, color: "text-green-300" },
   ];
 
   const filteredCards = tarotCards.filter(card =>
@@ -54,9 +54,11 @@ const TarotKartlariAnlamlari = () => {
               transition={{ delay: index * 0.1, duration: 0.5 }}
             >
               <Card className="bg-white bg-opacity-10 backdrop-blur-md overflow-hidden">
-                <img src={card.image} alt={card.name} className="w-full h-48 object-cover" />
                 <CardHeader>
-                  <CardTitle className="text-xl text-center text-white">{card.name}</CardTitle>
+                  <CardTitle className="text-xl text-center text-white flex items-center justify-center">
+                    {React.createElement(card.icon, { className: `w-12 h-12 ${card.color} mr-2` })}
+                    {card.name}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-purple-100 text-center">{card.meaning}</p>

@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { motion } from 'framer-motion';
-import { Sun, Moon, Star, Calendar } from 'lucide-react';
+import { Sun, Moon, Star, Calendar, Clock, MapPin } from 'lucide-react';
 
 const DogumHaritasi = () => {
   const [dogumTarihi, setDogumTarihi] = useState('');
