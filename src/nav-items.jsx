@@ -1,4 +1,4 @@
-import { HomeIcon, TestTubeIcon, AlertCircleIcon, BookIcon, BookOpenIcon, ShieldIcon, ShoppingBagIcon, Wand2Icon, StarIcon, UsersIcon, SparklesIcon, FeatherIcon } from "lucide-react";
+import { HomeIcon, TestTubeIcon, AlertCircleIcon, BookIcon, BookOpenIcon, ShieldIcon, ShoppingBagIcon, Wand2Icon, StarIcon, UsersIcon, SparklesIcon, FeatherIcon, TarotIcon } from "lucide-react";
 import Index from "./pages/Index.jsx";
 import BuyuTesti from "./pages/BuyuTesti.jsx";
 import BuyuBelirtileri from "./pages/BuyuBelirtileri.jsx";
@@ -10,6 +10,10 @@ import BuyuTurleri from "./pages/BuyuTurleri.jsx";
 import KullaniciDeneyimleri from "./pages/KullaniciDeneyimleri.jsx";
 import AstrolojiveBuyu from "./pages/AstrolojiveBuyu.jsx";
 import GunlukTavsiyeler from "./pages/GunlukTavsiyeler.jsx";
+import TarotFali from "./pages/TarotFali.jsx";
+import TekKartTarot from "./pages/TekKartTarot.jsx";
+import UcKartTarot from "./pages/UcKartTarot.jsx";
+import TarotKartlariAnlamlari from "./pages/TarotKartlariAnlamlari.jsx";
 
 export const navItems = [
   {
@@ -77,5 +81,28 @@ export const navItems = [
     to: "/gunluk-tavsiyeler",
     icon: <FeatherIcon className="h-4 w-4" />,
     page: <GunlukTavsiyeler />,
+  },
+  {
+    title: "Tarot Falı",
+    to: "/tarot-fali",
+    icon: <TarotIcon className="h-4 w-4" />,
+    page: <TarotFali />,
+    subItems: [
+      {
+        title: "Tek Kart Tarot",
+        to: "/tarot-fali/tek-kart",
+        page: <TekKartTarot />,
+      },
+      {
+        title: "Üç Kart Tarot Falı",
+        to: "/tarot-fali/uc-kart",
+        page: <UcKartTarot />,
+      },
+      {
+        title: "Tarot Kartları ve Anlamları",
+        to: "/tarot-fali/kartlar-ve-anlamlari",
+        page: <TarotKartlariAnlamlari />,
+      },
+    ],
   },
 ];

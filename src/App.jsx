@@ -14,6 +14,10 @@ import BuyuTurleri from "./pages/BuyuTurleri";
 import KullaniciDeneyimleri from "./pages/KullaniciDeneyimleri";
 import AstrolojiveBuyu from "./pages/AstrolojiveBuyu";
 import GunlukTavsiyeler from "./pages/GunlukTavsiyeler";
+import TarotFali from "./pages/TarotFali";
+import TekKartTarot from "./pages/TekKartTarot";
+import UcKartTarot from "./pages/UcKartTarot";
+import TarotKartlariAnlamlari from "./pages/TarotKartlariAnlamlari";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +39,10 @@ const App = () => (
             <Route path="/kullanici-deneyimleri" element={<KullaniciDeneyimleri />} />
             <Route path="/astroloji-ve-buyu" element={<AstrolojiveBuyu />} />
             <Route path="/gunluk-tavsiyeler" element={<GunlukTavsiyeler />} />
+            <Route path="/tarot-fali" element={<TarotFali />} />
+            <Route path="/tarot-fali/tek-kart" element={<TekKartTarot />} />
+            <Route path="/tarot-fali/uc-kart" element={<UcKartTarot />} />
+            <Route path="/tarot-fali/kartlar-ve-anlamlari" element={<TarotKartlariAnlamlari />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
