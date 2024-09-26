@@ -3,6 +3,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from 'next-themes';
+import Menu from "./components/Menu";
 import Index from "./pages/Index";
 import BuyuTesti from "./pages/BuyuTesti";
 import BuyuBelirtileri from "./pages/BuyuBelirtileri";
@@ -28,6 +29,7 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <BrowserRouter>
+          <Menu />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/buyu-testi" element={<BuyuTesti />} />

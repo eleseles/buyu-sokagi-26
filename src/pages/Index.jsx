@@ -4,12 +4,6 @@ import { Button } from "@/components/ui/button";
 import { motion } from 'framer-motion';
 import { Star, Zap, Shield, Book, Users, Sparkles, Moon, Sun, Wand2, Heart, Compass } from 'lucide-react';
 import { useTheme } from 'next-themes';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 const FeatureCard = ({ icon: Icon, title, description, to }) => (
   <motion.div
@@ -39,60 +33,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 dark:from-purple-900 dark:via-pink-900 dark:to-red-900 transition-colors duration-500">
-      <header className="py-6 px-4 bg-white dark:bg-gray-800 bg-opacity-10 backdrop-blur-md">
-        <nav className="container mx-auto flex justify-between items-center">
-          <Link to="/" className="text-3xl font-bold text-white dark:text-purple-300">BüyüDünyası</Link>
-          <div className="space-x-4 flex items-center">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline">Menü</Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem>
-                  <Link to="/buyu-testi">Büyü Testi</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link to="/buyu-turleri">Büyü Türleri</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link to="/buyu-belirtileri">Büyü Belirtileri</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link to="/buyu-yapimi">Büyü Yapımı</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link to="/buyu-dualari">Büyü Duaları</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link to="/buyu-bozma">Büyü Bozma</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link to="/buyu-kitabi">Büyü Kitabı</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link to="/kullanici-deneyimleri">Kullanıcı Deneyimleri</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link to="/astroloji-ve-buyu">Astroloji ve Büyü</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link to="/gunluk-tavsiyeler">Günlük Tavsiyeler</Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <Button asChild variant="secondary" className="bg-purple-600 text-white hover:bg-purple-700 transition-colors">
-              <Link to="/uye-ol">Üye Ol</Link>
-            </Button>
-            <button
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
-            >
-              {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </button>
-          </div>
-        </nav>
-      </header>
-
       <main className="container mx-auto px-4 py-16">
         <section className="text-center mb-16">
           <motion.h2 
