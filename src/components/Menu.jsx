@@ -47,22 +47,6 @@ const Menu = () => {
               </TabsTrigger>
             ))}
           </TabsList>
-          {Object.entries(MenuCategories).map(([category, items]) => (
-            <div key={category} className="absolute bg-purple-800 mt-1 p-1 rounded-md shadow-lg" data-value={category}>
-              <ul className="space-y-0.5">
-                {items.map((item) => (
-                  <li key={item.to}>
-                    <Link
-                      to={item.to}
-                      className="block text-purple-200 hover:text-white hover:bg-purple-700 px-2 py-0.5 rounded-md text-xs"
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
         </Tabs>
         <div className="flex items-center space-x-2">
           <Link to="/alisveris" className="text-white hover:text-purple-200">
