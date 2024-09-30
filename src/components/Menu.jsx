@@ -1,15 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Moon, Sun, Menu as MenuIcon } from 'lucide-react';
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Moon, Sun, ShoppingCart } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
 const MenuCategories = {
@@ -36,6 +28,7 @@ const MenuCategories = {
     { to: "/kullanici-deneyimleri", label: "Kullanıcı Deneyimleri" },
     { to: "/buyu-kitabi", label: "Büyü Kitabı" },
     { to: "/blog", label: "Blog" },
+    { to: "/alisveris", label: "Alışveriş" },
   ],
 };
 
@@ -44,45 +37,43 @@ const Menu = () => {
 
   return (
     <nav className="bg-purple-900 p-4 sticky top-0 z-50">
-      <div className="container mx-auto flex justify-between items-center">
-        <Link to="/" className="text-2xl font-bold text-white">BüyüDünyası</Link>
-        <div className="flex items-center space-x-4">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon">
-                <MenuIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all" />
-                <span className="sr-only">Toggle menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              {Object.entries(MenuCategories).map(([category, items]) => (
-                <React.Fragment key={category}>
-                  <DropdownMenuLabel>{category}</DropdownMenuLabel>
-                  {items.map((item) => (
-                    <DropdownMenuItem key={item.to} asChild>
-                      <Link to={item.to}>{item.label}</Link>
-                    </DropdownMenuItem>
-                  ))}
-                  <DropdownMenuSeparator />
-                </React.Fragment>
-              ))}
-              <DropdownMenuItem asChild>
-                <Link to="/uye-ol">Üye Ol</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/uye-girisi">Üye Girişi</Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <Button
-            variant="outline"
-            size="icon"
+      <div className="container mx-auto flex flex-col items-center">
+        <Link to="/" className="text-2xl font-bold text-white mb-4">BüyüDünyası</Link>
+        <Tabs defaultValue="Büyü" className="w-full max-w-3xl">
+          <TabsList className="grid w-full grid-cols-5">
+            {Object.keys(MenuCategories).map((category) => (
+              <TabsTrigger key={category} value={category} className="text-white">
+                {category}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+          {Object.entries(MenuCategories).map(([category, items]) => (
+            <div key={category} className="mt-4" data-value={category}>
+              <ul className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {items.map((item) => (
+                  <li key={item.to}>
+                    <Link
+                      to={item.to}
+                      className="block text-purple-200 hover:text-white hover:bg-purple-800 px-3 py-2 rounded-md text-sm"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </Tabs>
+        <div className="flex items-center space-x-4 mt-4">
+          <Link to="/alisveris" className="text-white hover:text-purple-200">
+            <ShoppingCart className="h-6 w-6" />
+          </Link>
+          <button
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            className="text-white hover:text-purple-200"
           >
-            <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-            <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-            <span className="sr-only">Toggle theme</span>
-          </Button>
+            {theme === "dark" ? <Sun className="h-6 w-6" /> : <Moon className="h-6 w-6" />}
+          </button>
         </div>
       </div>
     </nav>

@@ -24,6 +24,7 @@ import DogumHaritasi from "./pages/DogumHaritasi";
 import UyeOl from "./pages/UyeOl";
 import UyeGirisi from "./pages/UyeGirisi";
 import Blog from "./pages/Blog";
+import Alisveris from "./pages/Alisveris";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +57,7 @@ const App = () => (
                 <Route path="/uye-ol" element={<UyeOl />} />
                 <Route path="/uye-girisi" element={<UyeGirisi />} />
                 <Route path="/blog" element={<Blog />} />
+                <Route path="/alisveris" element={<Alisveris />} />
               </Routes>
             </main>
             <Footer />
