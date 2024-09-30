@@ -2,10 +2,10 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, Crystal, Wand2, Flame, Book, Sparkles, Gem, Compass, Feather } from 'lucide-react';
+import { ShoppingCart, Gem, Wand2, Flame, Book, Sparkles, Compass, Feather } from 'lucide-react';
 
 const products = [
-  { id: 1, name: "Kristal Küre", price: 199.99, icon: Crystal, description: "Geleceği görmek için mükemmel bir araç." },
+  { id: 1, name: "Kristal Küre", price: 199.99, icon: Gem, description: "Geleceği görmek için mükemmel bir araç." },
   { id: 2, name: "Tarot Destesi", price: 49.99, icon: Feather, description: "Klasik Rider-Waite tarot destesi." },
   { id: 3, name: "Tütsü Seti", price: 29.99, icon: Flame, description: "Çeşitli kokulardan oluşan tütsü seti." },
   { id: 4, name: "Büyü Kitabı", price: 79.99, icon: Book, description: "Antik büyüleri içeren el yazması kitap." },
