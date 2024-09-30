@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Moon, Sun, ShoppingCart } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
@@ -34,12 +34,13 @@ const MenuCategories = {
 
 const Menu = () => {
   const { theme, setTheme } = useTheme();
+  const [activeTab, setActiveTab] = useState("Büyü");
 
   return (
     <nav className="bg-purple-900 py-1 sticky top-0 z-50">
       <div className="container mx-auto flex items-center justify-between">
         <Link to="/" className="text-lg font-bold text-white">BüyüDünyası</Link>
-        <Tabs defaultValue="Büyü" className="w-auto">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-auto">
           <TabsList className="bg-purple-800 h-8">
             {Object.keys(MenuCategories).map((category) => (
               <TabsTrigger key={category} value={category} className="text-white text-sm px-2 py-1">
@@ -47,6 +48,17 @@ const Menu = () => {
               </TabsTrigger>
             ))}
           </TabsList>
+          {Object.entries(MenuCategories).map(([category, items]) => (
+            <TabsContent key={category} value={category} className="absolute left-0 right-0 bg-purple-800 mt-1">
+              <div className="flex space-x-4 p-2">
+                {items.map((item) => (
+                  <Link key={item.to} to={item.to} className="text-white hover:text-purple-200">
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            </TabsContent>
+          ))}
         </Tabs>
         <div className="flex items-center space-x-2">
           <Link to="/alisveris" className="text-white hover:text-purple-200">
