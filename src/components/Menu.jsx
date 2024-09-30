@@ -36,25 +36,25 @@ const Menu = () => {
   const { theme, setTheme } = useTheme();
 
   return (
-    <nav className="bg-purple-900 py-2 sticky top-0 z-50">
+    <nav className="bg-purple-900 py-1 sticky top-0 z-50">
       <div className="container mx-auto flex items-center justify-between">
-        <Link to="/" className="text-xl font-bold text-white">BüyüDünyası</Link>
+        <Link to="/" className="text-lg font-bold text-white">BüyüDünyası</Link>
         <Tabs defaultValue="Büyü" className="w-auto">
-          <TabsList className="bg-purple-800">
+          <TabsList className="bg-purple-800 h-8">
             {Object.keys(MenuCategories).map((category) => (
-              <TabsTrigger key={category} value={category} className="text-white">
+              <TabsTrigger key={category} value={category} className="text-white text-sm px-2 py-1">
                 {category}
               </TabsTrigger>
             ))}
           </TabsList>
           {Object.entries(MenuCategories).map(([category, items]) => (
-            <div key={category} className="absolute bg-purple-800 mt-2 p-2 rounded-md shadow-lg" data-value={category}>
-              <ul className="space-y-1">
+            <div key={category} className="absolute bg-purple-800 mt-1 p-1 rounded-md shadow-lg" data-value={category}>
+              <ul className="space-y-0.5">
                 {items.map((item) => (
                   <li key={item.to}>
                     <Link
                       to={item.to}
-                      className="block text-purple-200 hover:text-white hover:bg-purple-700 px-3 py-1 rounded-md text-sm"
+                      className="block text-purple-200 hover:text-white hover:bg-purple-700 px-2 py-0.5 rounded-md text-xs"
                     >
                       {item.label}
                     </Link>
@@ -64,15 +64,15 @@ const Menu = () => {
             </div>
           ))}
         </Tabs>
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2">
           <Link to="/alisveris" className="text-white hover:text-purple-200">
-            <ShoppingCart className="h-5 w-5" />
+            <ShoppingCart className="h-4 w-4" />
           </Link>
           <button
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
             className="text-white hover:text-purple-200"
           >
-            {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </button>
         </div>
       </div>

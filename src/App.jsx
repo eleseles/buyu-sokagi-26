@@ -36,7 +36,7 @@ const App = () => (
         <BrowserRouter>
           <div className="flex flex-col min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900">
             <Menu />
-            <main className="flex-grow">
+            <main className="flex-grow pt-4">
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/buyu-testi" element={<BuyuTesti />} />
