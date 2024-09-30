@@ -2,24 +2,26 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, Crystal, TarotCard, Flame, Book, Feather, Wand2, Star, Gem } from 'lucide-react';
 
 const products = [
-  { id: 1, name: "Kristal Küre", price: 199.99, image: "/crystal-ball.jpg", description: "Geleceği görmek için mükemmel bir araç." },
-  { id: 2, name: "Tarot Destesi", price: 49.99, image: "/tarot-deck.jpg", description: "Klasik Rider-Waite tarot destesi." },
-  { id: 3, name: "Tütsü Seti", price: 29.99, image: "/incense-set.jpg", description: "Çeşitli kokulardan oluşan tütsü seti." },
-  { id: 4, name: "Büyü Kitabı", price: 79.99, image: "/spell-book.jpg", description: "Antik büyüleri içeren el yazması kitap." },
-  { id: 5, name: "Rün Taşları", price: 59.99, image: "/rune-stones.jpg", description: "Kader okumak için rün taşı seti." },
-  { id: 6, name: "Şifa Kristalleri", price: 39.99, image: "/healing-crystals.jpg", description: "Çeşitli şifa kristallerinden oluşan set." },
-  { id: 7, name: "Büyü Çubuğu", price: 89.99, image: "/magic-wand.jpg", description: "El yapımı, özel tasarım büyü çubuğu." },
-  { id: 8, name: "Astroloji Haritası", price: 24.99, image: "/astrology-chart.jpg", description: "Kişiselleştirilmiş astroloji haritası." },
+  { id: 1, name: "Kristal Küre", price: 199.99, icon: Crystal, description: "Geleceği görmek için mükemmel bir araç." },
+  { id: 2, name: "Tarot Destesi", price: 49.99, icon: TarotCard, description: "Klasik Rider-Waite tarot destesi." },
+  { id: 3, name: "Tütsü Seti", price: 29.99, icon: Flame, description: "Çeşitli kokulardan oluşan tütsü seti." },
+  { id: 4, name: "Büyü Kitabı", price: 79.99, icon: Book, description: "Antik büyüleri içeren el yazması kitap." },
+  { id: 5, name: "Rün Taşları", price: 59.99, icon: Feather, description: "Kader okumak için rün taşı seti." },
+  { id: 6, name: "Şifa Kristalleri", price: 39.99, icon: Gem, description: "Çeşitli şifa kristallerinden oluşan set." },
+  { id: 7, name: "Büyü Çubuğu", price: 89.99, icon: Wand2, description: "El yapımı, özel tasarım büyü çubuğu." },
+  { id: 8, name: "Astroloji Haritası", price: 24.99, icon: Star, description: "Kişiselleştirilmiş astroloji haritası." },
 ];
 
 const ProductCard = ({ product }) => (
   <motion.div whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 300 }}>
     <Card className="h-full bg-purple-900 bg-opacity-50 backdrop-blur-md text-white border-2 border-purple-500">
       <CardHeader>
-        <img src={product.image} alt={product.name} className="w-full h-48 object-cover rounded-t-lg" />
+        <div className="w-full h-48 flex items-center justify-center">
+          {React.createElement(product.icon, { className: "w-24 h-24 text-purple-300" })}
+        </div>
         <CardTitle className="mt-2">{product.name}</CardTitle>
       </CardHeader>
       <CardContent>
