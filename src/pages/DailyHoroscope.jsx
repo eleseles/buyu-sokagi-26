@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Aries, Taurus, Gemini, Cancer, Leo, Virgo, Libra, Scorpio, Sagittarius, Capricorn, Aquarius, Pisces } from 'lucide-react';
+import { Aries, Taurus, Gemini, Cancer, Leo, Virgo, Libra, Scorpio, Sagittarius, Capricorn, Star, Pisces } from 'lucide-react';
 
 const zodiacSigns = [
   { name: "Koç", icon: Aries },
@@ -16,7 +16,7 @@ const zodiacSigns = [
   { name: "Akrep", icon: Scorpio },
   { name: "Yay", icon: Sagittarius },
   { name: "Oğlak", icon: Capricorn },
-  { name: "Kova", icon: Aquarius },
+  { name: "Kova", icon: Star },
   { name: "Balık", icon: Pisces },
 ];
 
