@@ -6,6 +6,9 @@ import { useTheme } from 'next-themes';
 import { Button } from "@/components/ui/button";
 
 const MenuCategories = {
+  "Ana Sayfa": [
+    { to: "/", label: "Ana Sayfa" },
+  ],
   Büyü: [
     { to: "/buyu-testi", label: "Büyü Testi" },
     { to: "/buyu-turleri", label: "Büyü Türleri" },
@@ -38,7 +41,7 @@ const MenuCategories = {
 
 const Menu = () => {
   const { theme, setTheme } = useTheme();
-  const [activeTab, setActiveTab] = useState("Büyü");
+  const [activeTab, setActiveTab] = useState("Ana Sayfa");
 
   return (
     <nav className="bg-purple-900 py-1 sticky top-0 z-50">
