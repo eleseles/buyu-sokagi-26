@@ -8,6 +8,8 @@ import { User, Star, Book, Shield, Zap, Heart, Trophy, Scroll, Award, Briefcase,
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import confetti from 'canvas-confetti';
+import RuhsalYolculuk from '../components/RuhsalYolculuk';
+import GunlukGorevler from '../components/GunlukGorevler';
 
 const Profil = () => {
   const [user, setUser] = useState({
@@ -239,28 +241,8 @@ const Profil = () => {
             ))}
           </CardContent>
         </Card>
-        <Card className="mt-6 bg-white bg-opacity-20 backdrop-blur-md">
-          <CardHeader>
-            <CardTitle className="text-2xl text-white flex items-center">
-              <Briefcase className="w-6 h-6 mr-2" />
-              Günlük Görevler
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {user.dailyTasks.map((task) => (
-              <div key={task.id} className="flex items-center justify-between mb-2">
-                <span className={`text-lg ${task.completed ? 'text-green-400 line-through' : 'text-white'}`}>
-                  {task.name}
-                </span>
-                {!task.completed && (
-                  <Button onClick={() => completeTask(task.id)} size="sm" variant="outline">
-                    Tamamla
-                  </Button>
-                )}
-              </div>
-            ))}
-          </CardContent>
-        </Card>
+        <GunlukGorevler tasks={user.dailyTasks} onCompleteTask={completeTask} />
+        <RuhsalYolculuk user={user} />
         <div className="mt-6 text-center">
           <Button className="bg-purple-600 hover:bg-purple-700 text-white">
             <Heart className="w-4 h-4 mr-2" />
