@@ -1,84 +1,25 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { motion } from 'framer-motion';
-import { Heart, Star, Shield, Zap, Moon, Volume2 } from 'lucide-react';
-import { useToast } from "@/components/ui/use-toast";
+import { Heart, Star, Shield, Zap, Moon } from 'lucide-react';
 
 const BuyuDualari = () => {
   const [customDua, setCustomDua] = useState('');
   const [dualar, setDualar] = useState([
-    {
-      title: "Aşk Duası",
-      icon: Heart,
-      color: "text-red-500",
-      content: "Sevgi dolu kalplerle birleşelim, aşkımız sonsuza dek sürsün.",
-      rituel: "Bu duayı okurken pembe bir mum yakın ve sevdiğiniz kişiyi düşünün."
-    },
-    {
-      title: "Şans Duası",
-      icon: Star,
-      color: "text-yellow-500",
-      content: "Talih yıldızım parlasın, şans her adımımda benimle olsun.",
-      rituel: "Bu duayı okurken yeşil bir mum yakın ve şanslı bir anınızı hayal edin."
-    },
-    {
-      title: "Koruma Duası",
-      icon: Shield,
-      color: "text-blue-500",
-      content: "Kötülüklerden uzak, iyiliklerle dolu bir yaşam için korunayım.",
-      rituel: "Bu duayı okurken beyaz bir mum yakın ve kendinizi güvende hissedin."
-    },
-    {
-      title: "Güç Duası",
-      icon: Zap,
-      color: "text-purple-500",
-      content: "İçimdeki güç ortaya çıksın, hedeflerime ulaşmamı sağlasın.",
-      rituel: "Bu duayı okurken mor bir mum yakın ve kendinizi güçlü hissedin."
-    },
-    {
-      title: "Huzur Duası",
-      icon: Moon,
-      color: "text-indigo-500",
-      content: "İç huzurum artsın, ruhum sakinleşsin, zihnimde barış hüküm sürsün.",
-      rituel: "Bu duayı okurken mavi bir mum yakın ve sakin bir yer hayal edin."
-    }
+    { title: "Aşk Duası", icon: Heart, content: "Sevgi dolu kalplerle birleşelim, aşkımız sonsuza dek sürsün." },
+    { title: "Şans Duası", icon: Star, content: "Talih yıldızım parlasın, şans her adımımda benimle olsun." },
+    { title: "Koruma Duası", icon: Shield, content: "Kötülüklerden uzak, iyiliklerle dolu bir yaşam için korunayım." },
+    { title: "Güç Duası", icon: Zap, content: "İçimdeki güç ortaya çıksın, hedeflerime ulaşmamı sağlasın." },
+    { title: "Huzur Duası", icon: Moon, content: "İç huzurum artsın, ruhum sakinleşsin, zihnimde barış hüküm sürsün." },
   ]);
-
-  const { toast } = useToast();
-  const audioRef = useRef(null);
 
   const handleCustomDuaSubmit = (e) => {
     e.preventDefault();
     if (customDua.trim() !== '') {
-      setDualar([...dualar, {
-        title: "Özel Dua",
-        icon: Star,
-        color: "text-green-500",
-        content: customDua,
-        rituel: "Bu duayı kendi ritüelinizle birlikte uygulayın."
-      }]);
+      setDualar([...dualar, { title: "Özel Dua", icon: Star, content: customDua }]);
       setCustomDua('');
-      toast({
-        title: "Yeni Dua Eklendi",
-        description: "Özel duanız başarıyla eklendi.",
-        duration: 3000,
-      });
-    }
-  };
-
-  const playAudio = (content) => {
-    if ('speechSynthesis' in window) {
-      const utterance = new SpeechSynthesisUtterance(content);
-      utterance.lang = 'tr-TR';
-      speechSynthesis.speak(utterance);
-    } else {
-      toast({
-        title: "Hata",
-        description: "Tarayıcınız ses özelliğini desteklemiyor.",
-        duration: 3000,
-      });
     }
   };
 
@@ -93,39 +34,29 @@ const BuyuDualari = () => {
         >
           Büyü Duaları
         </motion.h1>
-        <Card className="bg-white bg-opacity-10 backdrop-blur-md mb-8">
-          <CardHeader>
-            <CardTitle className="text-2xl text-center text-white">Güçlü Büyü Duaları</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="mb-6 text-purple-100">Büyü duaları, isteklerinizi evrene iletmek için kullanılan güçlü sözlerdir. Her duayı saygıyla ve inançla okuyun.</p>
-            <div className="grid md:grid-cols-2 gap-6">
-              {dualar.map((dua, index) => (
-                <motion.div 
-                  key={index}
-                  className="bg-purple-800 bg-opacity-30 p-4 rounded-lg"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
-                  <div className="flex items-center mb-2">
-                    {React.createElement(dua.icon, { className: `w-6 h-6 mr-2 ${dua.color}` })}
-                    <h3 className="text-xl font-semibold text-white">{dua.title}</h3>
-                  </div>
-                  <p className="text-purple-100 italic mb-2">"{dua.content}"</p>
-                  <p className="text-sm text-purple-200 mb-2">Ritüel: {dua.rituel}</p>
-                  <Button 
-                    onClick={() => playAudio(dua.content)}
-                    className="w-full bg-purple-600 hover:bg-purple-700 text-white flex items-center justify-center"
-                  >
-                    <Volume2 className="w-4 h-4 mr-2" />
-                    Sesli Dinle
-                  </Button>
-                </motion.div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="bg-white bg-opacity-10 backdrop-blur-md">
+        <div className="grid md:grid-cols-2 gap-6">
+          {dualar.map((dua, index) => (
+            <motion.div 
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1, duration: 0.5 }}
+            >
+              <Card className="bg-white bg-opacity-10 backdrop-blur-md">
+                <CardHeader>
+                  <CardTitle className="flex items-center text-white">
+                    <dua.icon className="w-6 h-6 mr-2" />
+                    {dua.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-purple-100 italic">"{dua.content}"</p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+        <Card className="mt-12 bg-white bg-opacity-10 backdrop-blur-md">
           <CardHeader>
             <CardTitle className="text-2xl text-center text-white">Kendi Duanızı Oluşturun</CardTitle>
           </CardHeader>
@@ -144,21 +75,7 @@ const BuyuDualari = () => {
             </form>
           </CardContent>
         </Card>
-        <motion.div 
-          className="mt-12 text-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6, duration: 0.5 }}
-        >
-          <p className="text-lg text-white mb-4">
-            Not: Bu duaları kullanırken saygılı ve dikkatli olun. Duaların gücü, niyetinizin saflığına ve inancınıza bağlıdır.
-          </p>
-          <Button className="bg-white text-purple-700 hover:bg-purple-100">
-            Dua Rehberini İndir
-          </Button>
-        </motion.div>
       </div>
-      <audio ref={audioRef} />
     </div>
   );
 };
