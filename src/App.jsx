@@ -30,6 +30,7 @@ import EnerjiTemizligi from "./pages/EnerjiTemizligi";
 import RuhsalYolculuk from "./pages/RuhsalYolculuk";
 import GunlukBurcYorumlari from "./pages/GunlukBurcYorumlari";
 import Profil from "./pages/Profil";
+import DailyHoroscope from "./pages/DailyHoroscope";
 
 const queryClient = new QueryClient();
 
@@ -68,6 +69,7 @@ const App = () => (
                 <Route path="/ruhsal-yolculuk" element={<RuhsalYolculuk />} />
                 <Route path="/gunluk-burc-yorumlari" element={<GunlukBurcYorumlari />} />
                 <Route path="/profil" element={<Profil />} />
+                <Route path="/daily-horoscope" element={<DailyHoroscope />} />
               </Routes>
             </main>
             <Footer />
