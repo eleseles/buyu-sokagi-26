@@ -6,12 +6,16 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertCircle, Zap, Cloud, Frown, Brain, Heart, Moon, Battery, Eye, Compass, Feather } from 'lucide-react';
 import { useToast } from "@/components/ui/use-toast";
+import { Input } from "@/components/ui/input";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 const BuyuBelirtileri = () => {
   const [selectedTab, setSelectedTab] = useState("fiziksel");
   const { toast } = useToast();
+  const [customSymptom, setCustomSymptom] = useState("");
+  const [showAddSymptomDialog, setShowAddSymptomDialog] = useState(false);
 
-  const belirtiler = {
+  const [belirtiler, setBelirtiler] = useState({
     fiziksel: [
       { icon: <Zap className="w-6 h-6 text-yellow-500" />, belirti: "Sürekli yorgunluk ve enerji düşüklüğü" },
       { icon: <Cloud className="w-6 h-6 text-blue-500" />, belirti: "Açıklanamayan baş ağrıları" },
@@ -33,7 +37,7 @@ const BuyuBelirtileri = () => {
       { icon: <Frown className="w-6 h-6 text-red-500" />, belirti: "Açıklanamayan öfke patlamaları" },
       { icon: <Feather className="w-6 h-6 text-pink-500" />, belirti: "Aşırı hassasiyet ve duygusallık" },
     ],
-  };
+  });
 
   const [testSonucu, setTestSonucu] = useState(null);
   const [seciliBelirti, setSeciliBelirti] = useState([]);
@@ -52,7 +56,7 @@ const BuyuBelirtileri = () => {
     const yuzde = (seciliBelitiSayisi / toplamBelirti) * 100;
 
     if (yuzde >= 75) {
-      setTestSonucu("Yüksek ihtimalle büyü etkisi altında olabilirsiniz.  Bir uzmana danışmanızı öneririz.");
+      setTestSonucu("Yüksek ihtimalle büyü etkisi altında olabilirsiniz. Bir uzmana danışmanızı öneririz.");
     } else if (yuzde >= 50) {
       setTestSonucu("Orta düzeyde büyü etkisi belirtileri gösteriyorsunuz. Önlem almanızda fayda var.");
     } else if (yuzde >= 25) {
@@ -66,6 +70,25 @@ const BuyuBelirtileri = () => {
       description: "Sonucunuzu görmek için aşağı kaydırın.",
       duration: 3000,
     });
+  };
+
+  const handleAddCustomSymptom = () => {
+    if (customSymptom.trim() !== "") {
+      setBelirtiler({
+        ...belirtiler,
+        [selectedTab]: [
+          ...belirtiler[selectedTab],
+          { icon: <AlertCircle className="w-6 h-6 text-purple-500" />, belirti: customSymptom }
+        ]
+      });
+      setCustomSymptom("");
+      setShowAddSymptomDialog(false);
+      toast({
+        title: "Belirti Eklendi",
+        description: "Özel belirtiniz başarıyla eklenmiştir.",
+        duration: 3000,
+      });
+    }
   };
 
   return (
@@ -119,10 +142,27 @@ const BuyuBelirtileri = () => {
                 ))}
               </AnimatePresence>
             </Tabs>
-            <div className="mt-8">
-              <Button onClick={hesaplaTestSonucu} className="w-full bg-purple-600 hover:bg-purple-700 text-white">
+            <div className="mt-4 flex justify-between">
+              <Button onClick={hesaplaTestSonucu} className="bg-purple-600 hover:bg-purple-700 text-white">
                 Sonucu Göster
               </Button>
+              <Dialog open={showAddSymptomDialog} onOpenChange={setShowAddSymptomDialog}>
+                <DialogTrigger asChild>
+                  <Button variant="outline">Özel Belirti Ekle</Button>
+                </DialogTrigger>
+                <DialogContent className="bg-purple-900 text-white">
+                  <DialogHeader>
+                    <DialogTitle>Özel Belirti Ekle</DialogTitle>
+                  </DialogHeader>
+                  <Input
+                    value={customSymptom}
+                    onChange={(e) => setCustomSymptom(e.target.value)}
+                    placeholder="Belirtiyi girin..."
+                    className="mb-4"
+                  />
+                  <Button onClick={handleAddCustomSymptom}>Ekle</Button>
+                </DialogContent>
+              </Dialog>
             </div>
             {testSonucu && (
               <motion.div
@@ -135,7 +175,8 @@ const BuyuBelirtileri = () => {
                 <Progress value={(seciliBelirti.length / Object.values(belirtiler).flat().length) * 100} className="mt-4" />
               </motion.div>
             )}
-          </CardContent>
+          </Car
+dContent>
         </Card>
         <motion.div
           className="mt-12 text-center"
