@@ -10,6 +10,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import confetti from 'canvas-confetti';
 import RuhsalYolculuk from '../components/RuhsalYolculuk';
 import GunlukGorevler from '../components/GunlukGorevler';
+import ProfileTarotCard from '../components/ProfileTarotCard';
 
 const Profil = () => {
   const [user, setUser] = useState({
@@ -51,6 +52,7 @@ const Profil = () => {
 
   const [showAchievementDialog, setShowAchievementDialog] = useState(false);
   const [selectedAchievement, setSelectedAchievement] = useState(null);
+  const [showShareDialog, setShowShareDialog] = useState(false);
 
   const handleAchievementClick = (achievement) => {
     setSelectedAchievement(achievement);
@@ -244,7 +246,7 @@ const Profil = () => {
         <GunlukGorevler tasks={user.dailyTasks} onCompleteTask={completeTask} />
         <RuhsalYolculuk user={user} />
         <div className="mt-6 text-center">
-          <Button className="bg-purple-600 hover:bg-purple-700 text-white">
+          <Button className="bg-purple-600 hover:bg-purple-700 text-white" onClick={() => setShowShareDialog(true)}>
             <Heart className="w-4 h-4 mr-2" />
             Ruhsal Yolculuğu Paylaş
           </Button>
@@ -259,6 +261,20 @@ const Profil = () => {
             </DialogTitle>
           </DialogHeader>
           <p>{selectedAchievement?.description}</p>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={showShareDialog} onOpenChange={setShowShareDialog}>
+        <DialogContent className="bg-purple-900 text-white">
+          <DialogHeader>
+            <DialogTitle>Ruhsal Yolculuğunuzu Paylaşın</DialogTitle>
+          </DialogHeader>
+          <div className="flex justify-center">
+            <ProfileTarotCard user={user} />
+          </div>
+          <p className="text-center mt-4">
+            Ruhsal yolculuk kartınızı indirmek için üzerine tıklayın. 
+            Sosyal medyada paylaşarak arkadaşlarınızı da bu yolculuğa davet edebilirsiniz!
+          </p>
         </DialogContent>
       </Dialog>
     </div>
