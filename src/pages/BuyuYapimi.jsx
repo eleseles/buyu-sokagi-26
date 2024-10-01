@@ -8,7 +8,6 @@ import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
 import confetti from 'canvas-confetti';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Stepper, Step, StepLabel, StepContent } from '@mui/material';
 
 const BuyuYapimi = () => {
   const [selectedSpell, setSelectedSpell] = useState(null);
@@ -29,76 +28,18 @@ const BuyuYapimi = () => {
     "Kehribar": 2
   });
   const [spellHistory, setSpellHistory] = useState([]);
-  const [activeStep, setActiveStep] = useState(0);
 
   const buyuler = [
-    { 
-      title: "Aşk Büyüsü", 
-      icon: Heart, 
-      description: "Sevdiğiniz kişiyi etkilemek için güçlü bir büyü.", 
-      ingredients: ["Gül yaprağı", "Mum", "Kristal"], 
-      duration: 30, 
-      difficulty: "Orta",
-      steps: [
-        "Malzemeleri hazırlayın: Gül yaprağı, mum ve kristal.",
-        "Mumu yakın ve gül yapraklarını etrafına dizin.",
-        "Kristali elinizde tutarak sevdiğiniz kişiyi düşünün.",
-        "Aşk enerjisini hissedin ve kristale aktarın.",
-        "Mum sönene kadar meditasyon yapın."
-      ]
-    },
-    { 
-      title: "Şans Büyüsü", 
-      icon: Sparkles, 
-      description: "Şansınızı artırmak ve fırsatları çekmek için.", 
-      ingredients: ["Dört yapraklı yonca", "Yeşil mum", "Zümrüt"], 
-      duration: 20, 
-      difficulty: "Kolay",
-      steps: [
-        "Malzemeleri hazırlayın: Dört yapraklı yonca, yeşil mum ve zümrüt.",
-        "Yeşil mumu yakın ve dört yapraklı yoncayı yanına koyun.",
-        "Zümrütü avucunuzda tutun ve şanslı anılarınızı düşünün.",
-        "Pozitif enerjiyi zümrüte aktarın.",
-        "Mum sönene kadar şükran duygularınıza odaklanın."
-      ]
-    },
-    { 
-      title: "Koruma Büyüsü", 
-      icon: Shield, 
-      description: "Kendinizi negatif enerjilerden korumak için.", 
-      ingredients: ["Tütsü", "Siyah obsidyen", "Tuz"], 
-      duration: 25, 
-      difficulty: "Zor",
-      steps: [
-        "Malzemeleri hazırlayın: Tütsü, siyah obsidyen ve tuz.",
-        "Tütsüyü yakın ve dumanın odayı doldurmasını bekleyin.",
-        "Siyah obsidyeni tuzla çevreleyerek bir daire oluşturun.",
-        "Dairenin ortasında durun ve koruyucu bir enerji kalkanı hayal edin.",
-        "Tütsü bitene kadar meditasyon yapın ve korunduğunuzu hissedin."
-      ]
-    },
-    { 
-      title: "Bolluk Büyüsü", 
-      icon: Coins, 
-      description: "Finansal başarı ve bolluk çekmek için.", 
-      ingredients: ["Tarçın çubuğu", "Altın renkli mum", "Kehribar"], 
-      duration: 35, 
-      difficulty: "Orta",
-      steps: [
-        "Malzemeleri hazırlayın: Tarçın çubuğu, altın renkli mum ve kehribar.",
-        "Altın renkli mumu yakın ve etrafına tarçın çubuklarını dizin.",
-        "Kehribarı avucunuzda tutun ve bolluk hayallerinizi düşünün.",
-        "Pozitif enerjiyi kehribara aktarın.",
-        "Mum sönene kadar finansal hedeflerinize odaklanın."
-      ]
-    },
+    { title: "Aşk Büyüsü", icon: Heart, description: "Sevdiğiniz kişiyi etkilemek için güçlü bir büyü.", ingredients: ["Gül yaprağı", "Mum", "Kristal"], duration: 30, difficulty: "Orta" },
+    { title: "Şans Büyüsü", icon: Sparkles, description: "Şansınızı artırmak ve fırsatları çekmek için.", ingredients: ["Dört yapraklı yonca", "Yeşil mum", "Zümrüt"], duration: 20, difficulty: "Kolay" },
+    { title: "Koruma Büyüsü", icon: Shield, description: "Kendinizi negatif enerjilerden korumak için.", ingredients: ["Tütsü", "Siyah obsidyen", "Tuz"], duration: 25, difficulty: "Zor" },
+    { title: "Bolluk Büyüsü", icon: Coins, description: "Finansal başarı ve bolluk çekmek için.", ingredients: ["Tarçın çubuğu", "Altın renkli mum", "Kehribar"], duration: 35, difficulty: "Orta" },
   ];
 
   const handleSpellClick = (spell) => {
     setSelectedSpell(spell);
     setShowSpellDialog(true);
     setSpellProgress(0);
-    setActiveStep(0);
   };
 
   const startSpell = () => {
@@ -152,18 +93,6 @@ const BuyuYapimi = () => {
       case "Zor": return "text-red-400";
       default: return "text-gray-400";
     }
-  };
-
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
   };
 
   return (
@@ -304,31 +233,6 @@ const BuyuYapimi = () => {
             {spellProgress === 100 && (
               <p className="text-green-400 font-bold">Büyü başarıyla tamamlandı!</p>
             )}
-            <Stepper activeStep={activeStep} orientation="vertical">
-              {selectedSpell?.steps.map((step, index) => (
-                <Step key={index}>
-                  <StepLabel>{`Adım ${index + 1}`}</StepLabel>
-                  <StepContent>
-                    <p>{step}</p>
-                    <div className="mt-2">
-                      <Button
-                        disabled={index === 0}
-                        onClick={handleBack}
-                        className="mr-2"
-                      >
-                        Geri
-                      </Button>
-                      <Button
-                        variant="contained"
-                        onClick={index === selectedSpell.steps.length - 1 ? handleReset : handleNext}
-                      >
-                        {index === selectedSpell.steps.length - 1 ? 'Bitir' : 'İleri'}
-                      </Button>
-                    </div>
-                  </StepContent>
-                </Step>
-              ))}
-            </Stepper>
             <Button onClick={startSpell} disabled={spellProgress > 0} className="w-full bg-purple-600 hover:bg-purple-700">
               Büyüyü Başlat
             </Button>
