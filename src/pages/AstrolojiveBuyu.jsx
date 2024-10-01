@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { motion } from 'framer-motion';
-import { Compass, Star, Moon, Sun, Sparkles } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import { Compass, Star, Moon, Sun, Sparkles, Wand2 } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { useToast } from "@/components/ui/use-toast";
 
 const AstrolojiveBuyu = () => {
   const [selectedBurc, setSelectedBurc] = useState("Koç");
+  const { toast } = useToast();
 
   const burclar = [
     { isim: "Koç", element: "Ateş", gezegen: "Mars", buyu: "Cesaret ve güç büyüleri", tavsiye: "Kırmızı mum ve karanfil kullanın." },
@@ -28,6 +31,14 @@ const AstrolojiveBuyu = () => {
     "Toprak": "from-green-500 to-yellow-500",
     "Hava": "from-blue-500 to-indigo-500",
     "Su": "from-cyan-500 to-blue-500"
+  };
+
+  const handleBuyuUygula = (burc) => {
+    toast({
+      title: "Büyü Uygulandı!",
+      description: `${burc.isim} burcu için ${burc.buyu} uygulandı.`,
+      duration: 3000,
+    });
   };
 
   return (
@@ -88,6 +99,13 @@ const AstrolojiveBuyu = () => {
                             <p>{burc.tavsiye}</p>
                           </div>
                         </div>
+                        <Button 
+                          className="mt-4 w-full bg-purple-600 hover:bg-purple-700"
+                          onClick={() => handleBuyuUygula(burc)}
+                        >
+                          <Wand2 className="w-4 h-4 mr-2" />
+                          Büyü Uygula
+                        </Button>
                       </CardContent>
                     </Card>
                   </motion.div>
@@ -140,10 +158,21 @@ const AstrolojiveBuyu = () => {
           <p className="text-lg text-white mb-4">
             Astroloji ve büyü bilgilerinizi derinleştirmek ve kişisel astrolojik haritanıza uygun büyüler öğrenmek ister misiniz?
           </p>
-          <Button className="bg-purple-700 hover:bg-purple-800 text-white">
-            <Sparkles className="w-4 h-4 mr-2" />
-            Kişisel Astro-Büyü Danışmanlığı Al
-          </Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="bg-purple-700 hover:bg-purple-800 text-white">
+                <Sparkles className="w-4 h-4 mr-2" />
+                Kişisel Astro-Büyü Danışmanlığı Al
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="bg-purple-900 text-white">
+              <DialogHeader>
+                <DialogTitle>Kişisel Astro-Büyü Danışmanlığı</DialogTitle>
+              </DialogHeader>
+              <p>Uzman astrologlarımız ve büyücülerimiz, sizin için özel olarak hazırlanmış bir danışmanlık hizmeti sunmaktadır. Doğum haritanıza ve kişisel enerjinize uygun büyüler, ritüeller ve astrolojik tavsiyeler alabilirsiniz.</p>
+              <Button className="mt-4">Randevu Al</Button>
+            </DialogContent>
+          </Dialog>
         </motion.div>
       </div>
     </div>
