@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { User, Star, Book, Shield, Zap, Heart, Trophy, Scroll } from 'lucide-react';
+import { User, Star, Book, Shield, Zap, Heart, Trophy, Scroll, Award } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import confetti from 'canvas-confetti';
 
 const Profil = () => {
   const [user, setUser] = useState({
@@ -22,6 +24,15 @@ const Profil = () => {
       { id: 1, name: "İlk Büyü", icon: Zap, description: "İlk büyünüzü başarıyla tamamladınız." },
       { id: 2, name: "Kitap Kurdu", icon: Book, description: "5 ruhsal kitap okudunuz." },
       { id: 3, name: "Ritüel Ustası", icon: Scroll, description: "10 ritüel tamamladınız." },
+    ],
+    inventory: [
+      { id: 1, name: "Kristal Küre", quantity: 1, rarity: "Nadir" },
+      { id: 2, name: "Tılsımlı Muska", quantity: 3, rarity: "Sıradan" },
+      { id: 3, name: "Ejderha Pulu", quantity: 1, rarity: "Efsanevi" },
+    ],
+    quests: [
+      { id: 1, name: "Kayıp Grimuar'ı Bul", progress: 60, reward: "500 XP" },
+      { id: 2, name: "3 Koruma Büyüsü Yap", progress: 33, reward: "Nadir Tılsım" },
     ]
   });
 
@@ -31,6 +42,28 @@ const Profil = () => {
   const handleAchievementClick = (achievement) => {
     setSelectedAchievement(achievement);
     setShowAchievementDialog(true);
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 }
+    });
+  };
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setUser(prevUser => ({
+        ...prevUser,
+        xp: prevUser.xp + 10 > prevUser.nextLevelXp ? prevUser.nextLevelXp : prevUser.xp + 10
+      }));
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const rarityColors = {
+    "Sıradan": "bg-gray-500",
+    "Nadir": "bg-blue-500",
+    "Efsanevi": "bg-purple-500"
   };
 
   return (
@@ -96,10 +129,11 @@ const Profil = () => {
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="rituals">
-              <TabsList className="grid w-full grid-cols-3">
+              <TabsList className="grid w-full grid-cols-4">
                 <TabsTrigger value="rituals">Ritüeller</TabsTrigger>
                 <TabsTrigger value="books">Okumalar</TabsTrigger>
                 <TabsTrigger value="achievements">Başarılar</TabsTrigger>
+                <TabsTrigger value="inventory">Envanter</TabsTrigger>
               </TabsList>
               <TabsContent value="rituals">
                 <div className="text-center">
@@ -135,7 +169,39 @@ const Profil = () => {
                   ))}
                 </div>
               </TabsContent>
+              <TabsContent value="inventory">
+                <div className="grid grid-cols-2 gap-4">
+                  {user.inventory.map((item) => (
+                    <Card key={item.id} className="bg-purple-800 bg-opacity-50">
+                      <CardContent className="p-4">
+                        <h4 className="text-lg font-bold text-white">{item.name}</h4>
+                        <p className="text-sm text-purple-200">Adet: {item.quantity}</p>
+                        <span className={`inline-block px-2 py-1 rounded-full text-xs ${rarityColors[item.rarity]} text-white mt-2`}>
+                          {item.rarity}
+                        </span>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </TabsContent>
             </Tabs>
+          </CardContent>
+        </Card>
+        <Card className="mt-6 bg-white bg-opacity-20 backdrop-blur-md">
+          <CardHeader>
+            <CardTitle className="text-2xl text-white flex items-center">
+              <Award className="w-6 h-6 mr-2" />
+              Aktif Görevler
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {user.quests.map((quest) => (
+              <div key={quest.id} className="mb-4">
+                <h4 className="text-lg font-bold text-white">{quest.name}</h4>
+                <Progress value={quest.progress} className="mt-2" />
+                <p className="text-sm text-purple-200 mt-1">Ödül: {quest.reward}</p>
+              </div>
+            ))}
           </CardContent>
         </Card>
         <div className="mt-6 text-center">

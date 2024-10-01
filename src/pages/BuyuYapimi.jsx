@@ -1,21 +1,37 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Wand2, Sparkles, Moon, Star, Heart, Shield, Coins, AlertTriangle } from 'lucide-react';
+import { Wand2, Sparkles, Moon, Star, Heart, Shield, Coins, AlertTriangle, Hourglass } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
+import { toast } from "sonner";
+import confetti from 'canvas-confetti';
 
 const BuyuYapimi = () => {
   const [selectedSpell, setSelectedSpell] = useState(null);
   const [showSpellDialog, setShowSpellDialog] = useState(false);
   const [spellProgress, setSpellProgress] = useState(0);
+  const [inventory, setInventory] = useState({
+    "Gül yaprağı": 5,
+    "Mum": 3,
+    "Kristal": 2,
+    "Dört yapraklı yonca": 1,
+    "Yeşil mum": 2,
+    "Zümrüt": 1,
+    "Tütsü": 4,
+    "Siyah obsidyen": 2,
+    "Tuz": 10,
+    "Tarçın çubuğu": 3,
+    "Altın renkli mum": 1,
+    "Kehribar": 2
+  });
 
   const buyuler = [
-    { title: "Aşk Büyüsü", icon: Heart, description: "Sevdiğiniz kişiyi etkilemek için güçlü bir büyü.", ingredients: ["Gül yaprağı", "Mum", "Kristal"], duration: 30 },
-    { title: "Şans Büyüsü", icon: Sparkles, description: "Şansınızı artırmak ve fırsatları çekmek için.", ingredients: ["Dört yapraklı yonca", "Yeşil mum", "Zümrüt"], duration: 20 },
-    { title: "Koruma Büyüsü", icon: Shield, description: "Kendinizi negatif enerjilerden korumak için.", ingredients: ["Tütsü", "Siyah obsidyen", "Tuz"], duration: 25 },
-    { title: "Bolluk Büyüsü", icon: Coins, description: "Finansal başarı ve bolluk çekmek için.", ingredients: ["Tarçın çubuğu", "Altın renkli mum", "Kehribar"], duration: 35 },
+    { title: "Aşk Büyüsü", icon: Heart, description: "Sevdiğiniz kişiyi etkilemek için güçlü bir büyü.", ingredients: ["Gül yaprağı", "Mum", "Kristal"], duration: 30, difficulty: "Orta" },
+    { title: "Şans Büyüsü", icon: Sparkles, description: "Şansınızı artırmak ve fırsatları çekmek için.", ingredients: ["Dört yapraklı yonca", "Yeşil mum", "Zümrüt"], duration: 20, difficulty: "Kolay" },
+    { title: "Koruma Büyüsü", icon: Shield, description: "Kendinizi negatif enerjilerden korumak için.", ingredients: ["Tütsü", "Siyah obsidyen", "Tuz"], duration: 25, difficulty: "Zor" },
+    { title: "Bolluk Büyüsü", icon: Coins, description: "Finansal başarı ve bolluk çekmek için.", ingredients: ["Tarçın çubuğu", "Altın renkli mum", "Kehribar"], duration: 35, difficulty: "Orta" },
   ];
 
   const handleSpellClick = (spell) => {
@@ -25,15 +41,55 @@ const BuyuYapimi = () => {
   };
 
   const startSpell = () => {
+    if (!hasAllIngredients(selectedSpell.ingredients)) {
+      toast.error("Büyü için gerekli malzemeler eksik!");
+      return;
+    }
+
+    useIngredients(selectedSpell.ingredients);
+    
     const interval = setInterval(() => {
       setSpellProgress((prevProgress) => {
         if (prevProgress >= 100) {
           clearInterval(interval);
+          completeSpell();
           return 100;
         }
         return prevProgress + (100 / selectedSpell.duration);
       });
     }, 1000);
+  };
+
+  const hasAllIngredients = (ingredients) => {
+    return ingredients.every(ingredient => inventory[ingredient] > 0);
+  };
+
+  const useIngredients = (ingredients) => {
+    setInventory(prevInventory => {
+      const newInventory = { ...prevInventory };
+      ingredients.forEach(ingredient => {
+        newInventory[ingredient] -= 1;
+      });
+      return newInventory;
+    });
+  };
+
+  const completeSpell = () => {
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 }
+    });
+    toast.success(`${selectedSpell.title} başarıyla tamamlandı!`);
+  };
+
+  const difficultyColor = (difficulty) => {
+    switch (difficulty) {
+      case "Kolay": return "text-green-400";
+      case "Orta": return "text-yellow-400";
+      case "Zor": return "text-red-400";
+      default: return "text-gray-400";
+    }
   };
 
   return (
@@ -55,7 +111,7 @@ const BuyuYapimi = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1, duration: 0.5 }}
             >
-              <Card className="bg-white bg-opacity-10 backdrop-blur-md cursor-pointer" onClick={() => handleSpellClick(buyu)}>
+              <Card className="bg-white bg-opacity-10 backdrop-blur-md cursor-pointer hover:bg-opacity-20 transition-all" onClick={() => handleSpellClick(buyu)}>
                 <CardHeader>
                   <CardTitle className="flex items-center text-white">
                     {React.createElement(buyu.icon, { className: "w-6 h-6 mr-2" })}
@@ -64,6 +120,7 @@ const BuyuYapimi = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-purple-100 mb-4">{buyu.description}</p>
+                  <p className={`text-sm ${difficultyColor(buyu.difficulty)} mb-2`}>Zorluk: {buyu.difficulty}</p>
                   <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white">
                     Büyüyü İncele
                   </Button>
@@ -105,7 +162,9 @@ const BuyuYapimi = () => {
               <h4 className="font-bold mb-2">Gerekli Malzemeler:</h4>
               <ul className="list-disc list-inside">
                 {selectedSpell?.ingredients.map((ingredient, index) => (
-                  <li key={index}>{ingredient}</li>
+                  <li key={index} className={inventory[ingredient] > 0 ? "text-green-400" : "text-red-400"}>
+                    {ingredient} ({inventory[ingredient]} adet mevcut)
+                  </li>
                 ))}
               </ul>
             </div>
@@ -117,6 +176,10 @@ const BuyuYapimi = () => {
               <div>
                 <h4 className="font-bold mb-2">Büyü İlerlemesi:</h4>
                 <Progress value={spellProgress} className="h-2" />
+                <div className="flex justify-center items-center mt-2">
+                  <Hourglass className="w-4 h-4 mr-2 animate-spin" />
+                  <p>{Math.round(spellProgress)}%</p>
+                </div>
               </div>
             )}
             {spellProgress === 100 && (
