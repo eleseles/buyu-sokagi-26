@@ -4,7 +4,8 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { User, Star, Book, Shield, Zap, Heart } from 'lucide-react';
+import { User, Star, Book, Shield, Zap, Heart, Trophy, Scroll } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 const Profil = () => {
   const [user, setUser] = useState({
@@ -16,8 +17,21 @@ const Profil = () => {
     nextLevelXp: 5000,
     favoriteTalisman: "Koruyucu Kalkan",
     completedRituals: 15,
-    readBooks: 7
+    readBooks: 7,
+    achievements: [
+      { id: 1, name: "İlk Büyü", icon: Zap, description: "İlk büyünüzü başarıyla tamamladınız." },
+      { id: 2, name: "Kitap Kurdu", icon: Book, description: "5 ruhsal kitap okudunuz." },
+      { id: 3, name: "Ritüel Ustası", icon: Scroll, description: "10 ritüel tamamladınız." },
+    ]
   });
+
+  const [showAchievementDialog, setShowAchievementDialog] = useState(false);
+  const [selectedAchievement, setSelectedAchievement] = useState(null);
+
+  const handleAchievementClick = (achievement) => {
+    setSelectedAchievement(achievement);
+    setShowAchievementDialog(true);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-600 via-pink-500 to-red-500 py-12">
@@ -102,14 +116,23 @@ const Profil = () => {
                 </div>
               </TabsContent>
               <TabsContent value="achievements">
-                <div className="text-center">
-                  <Star className="w-12 h-12 text-yellow-400 mx-auto mb-2" />
-                  <h3 className="text-2xl font-bold text-white mb-2">Ruhsal Başarılar</h3>
-                  <ul className="text-purple-200">
-                    <li>İlk Meditasyon</li>
-                    <li>Enerji Ustası</li>
-                    <li>Tarot Öğrencisi</li>
-                  </ul>
+                <div className="grid grid-cols-3 gap-4">
+                  {user.achievements.map((achievement) => (
+                    <motion.div
+                      key={achievement.id}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => handleAchievementClick(achievement)}
+                      className="cursor-pointer"
+                    >
+                      <Card className="bg-purple-800 bg-opacity-50">
+                        <CardContent className="p-4 text-center">
+                          {React.createElement(achievement.icon, { className: "w-8 h-8 mx-auto mb-2 text-yellow-400" })}
+                          <p className="text-sm font-bold text-white">{achievement.name}</p>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  ))}
                 </div>
               </TabsContent>
             </Tabs>
@@ -122,6 +145,17 @@ const Profil = () => {
           </Button>
         </div>
       </div>
+      <Dialog open={showAchievementDialog} onOpenChange={setShowAchievementDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center">
+              {selectedAchievement && React.createElement(selectedAchievement.icon, { className: "w-6 h-6 mr-2 text-yellow-400" })}
+              {selectedAchievement?.name}
+            </DialogTitle>
+          </DialogHeader>
+          <p>{selectedAchievement?.description}</p>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
