@@ -1,28 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Aries, Taurus, Gemini, Cancer, Leo, Virgo, Libra, Scorpio, Sagittarius, Capricorn, Star, Pisces } from 'lucide-react';
+import { Star } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 
 const zodiacSigns = [
-  { name: "Koç", icon: Aries },
-  { name: "Boğa", icon: Taurus },
-  { name: "İkizler", icon: Gemini },
-  { name: "Yengeç", icon: Cancer },
-  { name: "Aslan", icon: Leo },
-  { name: "Başak", icon: Virgo },
-  { name: "Terazi", icon: Libra },
-  { name: "Akrep", icon: Scorpio },
-  { name: "Yay", icon: Sagittarius },
-  { name: "Oğlak", icon: Capricorn },
-  { name: "Kova", icon: Star },
-  { name: "Balık", icon: Pisces },
+  "Koç", "Boğa", "İkizler", "Yengeç", "Aslan", "Başak",
+  "Terazi", "Akrep", "Yay", "Oğlak", "Kova", "Balık"
 ];
 
 const fetchHoroscope = async (sign) => {
-  // Bu fonksiyon normalde bir API'ye istek atardı, ancak şimdilik rastgele bir yorum döndüreceğiz
+  // This function would normally make an API request, but for now we'll return a random horoscope
   const horoscopeTexts = [
     "Bugün şansınız yaver gidecek. Yeni fırsatlar kapınızı çalabilir.",
     "İlişkilerinizde dikkatli olun. Yanlış anlaşılmalar yaşanabilir.",
@@ -73,16 +63,16 @@ const DailyHoroscope = () => {
             <CardTitle className="text-2xl text-center text-white">Burcunuzu Seçin</CardTitle>
           </CardHeader>
           <CardContent>
-            <Select onValueChange={(value) => setSelectedSign(zodiacSigns.find(sign => sign.name === value))}>
+            <Select onValueChange={(value) => setSelectedSign(value)}>
               <SelectTrigger className="w-full mb-4">
                 <SelectValue placeholder="Burç seçin" />
               </SelectTrigger>
               <SelectContent>
                 {zodiacSigns.map((sign) => (
-                  <SelectItem key={sign.name} value={sign.name}>
+                  <SelectItem key={sign} value={sign}>
                     <div className="flex items-center">
-                      {React.createElement(sign.icon, { className: "w-5 h-5 mr-2" })}
-                      {sign.name}
+                      <Star className="w-5 h-5 mr-2" />
+                      {sign}
                     </div>
                   </SelectItem>
                 ))}
@@ -104,8 +94,8 @@ const DailyHoroscope = () => {
                 <Card className="bg-purple-800 bg-opacity-50">
                   <CardHeader>
                     <CardTitle className="text-xl text-white flex items-center justify-center">
-                      {selectedSign && React.createElement(selectedSign.icon, { className: "w-6 h-6 mr-2" })}
-                      {selectedSign?.name} Burcu Günlük Yorumu
+                      <Star className="w-6 h-6 mr-2" />
+                      {selectedSign} Burcu Günlük Yorumu
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
