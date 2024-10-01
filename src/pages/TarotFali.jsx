@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, Sun, Moon, Star, Heart, Zap, Shield, Book, Feather } from 'lucide-react';
+import { Sparkles, Sun, Moon, Star, Heart, Zap, Shield, Book, Feather, Shuffle } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { useQuery } from '@tanstack/react-query';
 
 const tarotCards = [
   { name: "The Sun", meaning: "Başarı, mutluluk, pozitif enerji", icon: Sun, color: "text-yellow-500" },
@@ -19,33 +20,33 @@ const tarotCards = [
   { name: "The Empress", meaning: "Bereket, annelik, doğa", icon: Feather, color: "text-green-300" },
 ];
 
+const fetchDailyTarotCard = async () => {
+  // Simulating an API call
+  await new Promise(resolve => setTimeout(resolve, 1000));
+  return tarotCards[Math.floor(Math.random() * tarotCards.length)];
+};
+
 const TarotFali = () => {
   const [selectedCard, setSelectedCard] = useState(null);
   const [isFlipped, setIsFlipped] = useState(false);
   const [showMeaningDialog, setShowMeaningDialog] = useState(false);
-  const [dailyCardDrawn, setDailyCardDrawn] = useState(false);
+
+  const { data: dailyCard, isLoading, refetch } = useQuery({
+    queryKey: ['dailyTarotCard'],
+    queryFn: fetchDailyTarotCard,
+    staleTime: 24 * 60 * 60 * 1000, // 24 hours
+  });
 
   useEffect(() => {
-    const lastDrawDate = localStorage.getItem('lastTarotDrawDate');
-    const today = new Date().toDateString();
-    if (lastDrawDate !== today) {
-      setDailyCardDrawn(false);
-    } else {
-      setDailyCardDrawn(true);
+    if (dailyCard) {
+      setSelectedCard(dailyCard);
+      setIsFlipped(true);
     }
-  }, []);
+  }, [dailyCard]);
 
   const selectRandomCard = () => {
-    if (dailyCardDrawn) {
-      toast.error("Günlük tarot kartınızı zaten çektiniz. Yarın tekrar deneyin!");
-      return;
-    }
     setIsFlipped(false);
-    const randomCard = tarotCards[Math.floor(Math.random() * tarotCards.length)];
-    setSelectedCard(randomCard);
-    setTimeout(() => setIsFlipped(true), 500);
-    localStorage.setItem('lastTarotDrawDate', new Date().toDateString());
-    setDailyCardDrawn(true);
+    refetch();
   };
 
   return (
@@ -86,8 +87,8 @@ const TarotFali = () => {
                   </motion.div>
                 )}
               </AnimatePresence>
-              <Button onClick={selectRandomCard} className="bg-purple-600 hover:bg-purple-700 text-white" disabled={dailyCardDrawn}>
-                {dailyCardDrawn ? "Günlük Kart Çekildi" : "Günlük Kart Çek"}
+              <Button onClick={selectRandomCard} className="bg-purple-600 hover:bg-purple-700 text-white" disabled={isLoading}>
+                {isLoading ? "Kart Çekiliyor..." : "Yeni Kart Çek"}
               </Button>
               {selectedCard && (
                 <Button onClick={() => setShowMeaningDialog(true)} className="ml-2 bg-purple-600 hover:bg-purple-700 text-white">
@@ -108,7 +109,7 @@ const TarotFali = () => {
                 <Link to="/tarot-fali/kartlar-ve-anlamlari">Tarot Kartları ve Anlamları</Link>
               </Button>
               <Button asChild className="w-full bg-purple-600 hover:bg-purple-700 text-white">
-                <Link to="/tarot-fali/yasam-yolu">Yaşam Yolu Tarot Okuması</Link>
+                <Link to="/tarot-fali/tek-kart">Tek Kart Tarot</Link>
               </Button>
             </CardContent>
           </Card>

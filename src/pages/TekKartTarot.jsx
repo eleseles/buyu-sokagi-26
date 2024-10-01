@@ -2,27 +2,39 @@ import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sun, Moon, Star, Heart, Zap, Shield, Sparkles } from 'lucide-react';
+import { Sun, Moon, Star, Heart, Zap, Shield, Sparkles, Compass, Feather, Eye } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { useToast } from "@/components/ui/use-toast";
 
 const TekKartTarot = () => {
   const [selectedCard, setSelectedCard] = useState(null);
   const [isFlipped, setIsFlipped] = useState(false);
+  const [showInterpretation, setShowInterpretation] = useState(false);
+  const { toast } = useToast();
 
   const tarotCards = [
-    { name: "The Sun", meaning: "Başarı, mutluluk, pozitif enerji", icon: Sun, color: "text-yellow-500" },
-    { name: "The Moon", meaning: "Sezgiler, bilinçaltı, gizem", icon: Moon, color: "text-blue-300" },
-    { name: "The Star", meaning: "Umut, ilham, rehberlik", icon: Star, color: "text-purple-300" },
-    { name: "The Lovers", meaning: "Aşk, uyum, ilişkiler", icon: Heart, color: "text-red-500" },
-    { name: "The Tower", meaning: "Ani değişim, yıkım, yeniden yapılanma", icon: Zap, color: "text-orange-500" },
-    { name: "The Hermit", meaning: "İçe dönüş, yalnızlık, bilgelik arayışı", icon: Shield, color: "text-green-500" },
-    { name: "The Magician", meaning: "Yaratıcılık, beceri, irade gücü", icon: Sparkles, color: "text-indigo-500" },
+    { name: "The Sun", meaning: "Başarı, mutluluk, pozitif enerji", icon: Sun, color: "text-yellow-500", interpretation: "Hayatınızda parlak bir dönem başlıyor. Başarılarınızın tadını çıkarın ve pozitif enerjinizi çevrenizdekilerle paylaşın." },
+    { name: "The Moon", meaning: "Sezgiler, bilinçaltı, gizem", icon: Moon, color: "text-blue-300", interpretation: "İç sesinizi dinleme zamanı. Rüyalarınıza ve sezgilerinize güvenin, size yol gösterecekler." },
+    { name: "The Star", meaning: "Umut, ilham, rehberlik", icon: Star, color: "text-purple-300", interpretation: "Umudunuzu kaybetmeyin. Yıldızlar size rehberlik ediyor ve yakında hayalleriniz gerçekleşecek." },
+    { name: "The Lovers", meaning: "Aşk, uyum, ilişkiler", icon: Heart, color: "text-red-500", interpretation: "İlişkilerinizde uyum ve dengeyi bulacaksınız. Sevgi dolu bir dönem sizi bekliyor." },
+    { name: "The Tower", meaning: "Ani değişim, yıkım, yeniden yapılanma", icon: Zap, color: "text-orange-500", interpretation: "Büyük değişimler kapıda. Bu zorlu süreç sizi daha güçlü kılacak ve yeni fırsatlar doğuracak." },
+    { name: "The Hermit", meaning: "İçe dönüş, yalnızlık, bilgelik arayışı", icon: Shield, color: "text-green-500", interpretation: "Kendinize zaman ayırın ve içsel yolculuğunuza odaklanın. Bu dönemde edindiğiniz bilgelik, ileride size rehberlik edecek." },
+    { name: "The Magician", meaning: "Yaratıcılık, beceri, irade gücü", icon: Sparkles, color: "text-indigo-500", interpretation: "Yaratıcı gücünüzü kullanma zamanı. Hedeflerinize ulaşmak için gereken tüm kaynaklara sahipsiniz." },
+    { name: "The Fool", meaning: "Yeni başlangıçlar, spontanlık, macera", icon: Compass, color: "text-teal-500", interpretation: "Yeni bir maceraya atılmaktan korkmayın. Spontane kararlar, sizi beklenmedik güzelliklere götürebilir." },
+    { name: "The High Priestess", meaning: "Sezgi, gizli bilgi, bilinçaltı", icon: Eye, color: "text-pink-500", interpretation: "İç sesinizi dinleyin ve sezgilerinize güvenin. Bilinçaltınızdaki bilgeliğe erişme zamanı." },
+    { name: "The Empress", meaning: "Bereket, annelik, doğa", icon: Feather, color: "text-green-300", interpretation: "Bolluk ve bereket dönemindesiniz. Yaratıcılığınızı ve şefkatinizi çevrenizdekilerle paylaşın." },
   ];
 
   const selectRandomCard = () => {
     setIsFlipped(false);
-    const randomIndex = Math.floor(Math.random() * tarotCards.length);
-    setSelectedCard(tarotCards[randomIndex]);
+    const randomCard = tarotCards[Math.floor(Math.random() * tarotCards.length)];
+    setSelectedCard(randomCard);
     setTimeout(() => setIsFlipped(true), 500);
+    toast({
+      title: "Yeni Kart Çekildi!",
+      description: `${randomCard.name} kartını çektiniz.`,
+      duration: 3000,
+    });
   };
 
   return (
@@ -70,12 +82,29 @@ const TekKartTarot = () => {
                 <p className="text-purple-200 mb-4">{selectedCard.meaning}</p>
               </motion.div>
             )}
-            <Button onClick={selectRandomCard} className="bg-purple-600 hover:bg-purple-700 text-white">
+            <Button onClick={selectRandomCard} className="bg-purple-600 hover:bg-purple-700 text-white mb-2">
               {selectedCard ? "Yeni Kart Çek" : "Kart Çek"}
             </Button>
+            {selectedCard && (
+              <Button onClick={() => setShowInterpretation(true)} className="bg-purple-600 hover:bg-purple-700 text-white ml-2">
+                Yorumu Gör
+              </Button>
+            )}
           </CardContent>
         </Card>
       </div>
+      <Dialog open={showInterpretation} onOpenChange={setShowInterpretation}>
+        <DialogContent className="bg-purple-900 text-white">
+          <DialogHeader>
+            <DialogTitle className="flex items-center text-2xl">
+              {selectedCard && React.createElement(selectedCard.icon, { className: `w-8 h-8 mr-2 ${selectedCard.color}` })}
+              {selectedCard?.name} Yorumu
+            </DialogTitle>
+          </DialogHeader>
+          <p className="text-lg">{selectedCard?.interpretation}</p>
+          <p className="mt-4 text-sm italic">Bu yorum, kartın genel anlamını yansıtır. Kendi hayatınızla nasıl bağlantı kurduğunu düşünün.</p>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
