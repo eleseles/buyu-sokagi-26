@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Wand2, Sparkles, Moon, Star } from 'lucide-react';
+import { Wand2, Sparkles, Moon, Star, Heart, Shield, Coins } from 'lucide-react';
 
 const BuyuYapimi = () => {
   const buyuler = [
