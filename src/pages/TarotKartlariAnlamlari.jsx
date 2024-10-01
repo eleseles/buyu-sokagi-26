@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { motion } from 'framer-motion';
 import { Input } from "@/components/ui/input";
-import { Sun, Moon, Star, Heart, Zap, Shield, Sparkles, Compass, Feather, Eye, Wand2, Coins, Swords, Cups } from 'lucide-react';
+import { Sun, Moon, Star, Heart, Zap, Shield, Sparkles, Compass, Feather, Eye, Wand2, Coins, Swords, Coffee } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -25,7 +25,7 @@ const TarotKartlariAnlamlari = () => {
     { name: "Ace of Wands", meaning: "Yeni başlangıçlar, ilham, potansiyel", icon: Wand2, color: "text-red-400", suit: "Wands", description: "Asaların Ası, yeni fırsatları ve yaratıcı potansiyeli temsil eder. Yeni projelere başlamak için ideal bir zamandır." },
     { name: "King of Pentacles", meaning: "Maddi başarı, pratiklik, güvenilirlik", icon: Coins, color: "text-yellow-600", suit: "Pentacles", description: "Pentakl Kralı, finansal başarıyı ve maddi güvenliği temsil eder. Pratik ve güvenilir bir liderliği simgeler." },
     { name: "Queen of Swords", meaning: "Keskin zeka, dürüstlük, bağımsızlık", icon: Swords, color: "text-blue-500", suit: "Swords", description: "Kılıçların Kraliçesi, keskin zekayı ve dürüstlüğü temsil eder. Bağımsız düşünce ve net iletişimi simgeler." },
-    { name: "Knight of Cups", meaning: "Romantizm, macera, duygusal teklifler", icon: Cups, color: "text-pink-400", suit: "Cups", description: "Kupaların Şövalyesi, romantik yaklaşımları ve duygusal maceraları temsil eder. Yeni ilişkiler veya yaratıcı projeler için bir davet niteliğindedir." },
+    { name: "Knight of Cups", meaning: "Romantizm, macera, duygusal teklifler", icon: Coffee, color: "text-pink-400", suit: "Cups", description: "Kupaların Şövalyesi, romantik yaklaşımları ve duygusal maceraları temsil eder. Yeni ilişkiler veya yaratıcı projeler için bir davet niteliğindedir." },
   ];
 
   const filteredCards = tarotCards.filter(card =>
