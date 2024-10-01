@@ -50,9 +50,7 @@ const App = () => (
                 <Route path="/buyu-dualari" element={<BuyuDualari />} />
                 <Route path="/buyu-bozma" element={<BuyuBozma />} />
                 <Route path="/buyu-kitabi" element={<BuyuKitabi />} />
-                <Route path="/buyu-turleri" element={<Buy
-
-uTurleri />} />
+                <Route path="/buyu-turleri" element={<BuyuTurleri />} />
                 <Route path="/kullanici-deneyimleri" element={<KullaniciDeneyimleri />} />
                 <Route path="/astroloji-ve-buyu" element={<AstrolojiveBuyu />} />
                 <Route path="/gunluk-tavsiyeler" element={<GunlukTavsiyeler />} />
