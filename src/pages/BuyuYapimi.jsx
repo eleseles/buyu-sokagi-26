@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
 import confetti from 'canvas-confetti';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const BuyuYapimi = () => {
   const [selectedSpell, setSelectedSpell] = useState(null);
@@ -26,6 +27,7 @@ const BuyuYapimi = () => {
     "Altın renkli mum": 1,
     "Kehribar": 2
   });
+  const [spellHistory, setSpellHistory] = useState([]);
 
   const buyuler = [
     { title: "Aşk Büyüsü", icon: Heart, description: "Sevdiğiniz kişiyi etkilemek için güçlü bir büyü.", ingredients: ["Gül yaprağı", "Mum", "Kristal"], duration: 30, difficulty: "Orta" },
@@ -81,6 +83,7 @@ const BuyuYapimi = () => {
       origin: { y: 0.6 }
     });
     toast.success(`${selectedSpell.title} başarıyla tamamlandı!`);
+    setSpellHistory(prevHistory => [...prevHistory, { ...selectedSpell, completedAt: new Date() }]);
   };
 
   const difficultyColor = (difficulty) => {
@@ -103,32 +106,77 @@ const BuyuYapimi = () => {
         >
           Büyü Yapımı
         </motion.h1>
-        <div className="grid md:grid-cols-2 gap-6">
-          {buyuler.map((buyu, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
-            >
-              <Card className="bg-white bg-opacity-10 backdrop-blur-md cursor-pointer hover:bg-opacity-20 transition-all" onClick={() => handleSpellClick(buyu)}>
-                <CardHeader>
-                  <CardTitle className="flex items-center text-white">
-                    {React.createElement(buyu.icon, { className: "w-6 h-6 mr-2" })}
-                    {buyu.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-purple-100 mb-4">{buyu.description}</p>
-                  <p className={`text-sm ${difficultyColor(buyu.difficulty)} mb-2`}>Zorluk: {buyu.difficulty}</p>
-                  <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white">
-                    Büyüyü İncele
-                  </Button>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
+        <Tabs defaultValue="spells" className="w-full">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="spells">Büyüler</TabsTrigger>
+            <TabsTrigger value="inventory">Envanter</TabsTrigger>
+            <TabsTrigger value="history">Geçmiş</TabsTrigger>
+          </TabsList>
+          <TabsContent value="spells">
+            <div className="grid md:grid-cols-2 gap-6">
+              {buyuler.map((buyu, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1, duration: 0.5 }}
+                >
+                  <Card className="bg-white bg-opacity-10 backdrop-blur-md cursor-pointer hover:bg-opacity-20 transition-all" onClick={() => handleSpellClick(buyu)}>
+                    <CardHeader>
+                      <CardTitle className="flex items-center text-white">
+                        {React.createElement(buyu.icon, { className: "w-6 h-6 mr-2" })}
+                        {buyu.title}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-purple-100 mb-4">{buyu.description}</p>
+                      <p className={`text-sm ${difficultyColor(buyu.difficulty)} mb-2`}>Zorluk: {buyu.difficulty}</p>
+                      <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white">
+                        Büyüyü İncele
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </TabsContent>
+          <TabsContent value="inventory">
+            <Card className="bg-white bg-opacity-10 backdrop-blur-md">
+              <CardHeader>
+                <CardTitle className="text-white">Envanter</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {Object.entries(inventory).map(([item, count]) => (
+                    <li key={item} className="text-white">
+                      {item}: {count}
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="history">
+            <Card className="bg-white bg-opacity-10 backdrop-blur-md">
+              <CardHeader>
+                <CardTitle className="text-white">Büyü Geçmişi</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {spellHistory.length > 0 ? (
+                  <ul className="space-y-2">
+                    {spellHistory.map((spell, index) => (
+                      <li key={index} className="text-white">
+                        {spell.title} - {new Date(spell.completedAt).toLocaleString()}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-white">Henüz tamamlanmış büyü bulunmuyor.</p>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
         <motion.div 
           className="mt-12 text-center"
           initial={{ opacity: 0 }}

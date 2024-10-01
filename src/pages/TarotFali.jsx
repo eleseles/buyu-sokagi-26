@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, Sun, Moon, Star, Heart, Zap, Shield } from 'lucide-react';
+import { Sparkles, Sun, Moon, Star, Heart, Zap, Shield, Book, Feather } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { toast } from "sonner";
 
 const tarotCards = [
   { name: "The Sun", meaning: "Başarı, mutluluk, pozitif enerji", icon: Sun, color: "text-yellow-500" },
@@ -13,17 +15,37 @@ const tarotCards = [
   { name: "The Tower", meaning: "Ani değişim,yıkım, yeniden yapılanma", icon: Zap, color: "text-orange-500" },
   { name: "The Hermit", meaning: "İçe dönüş, yalnızlık, bilgelik arayışı", icon: Shield, color: "text-green-500" },
   { name: "The Magician", meaning: "Yaratıcılık, beceri, irade gücü", icon: Sparkles, color: "text-indigo-500" },
+  { name: "The High Priestess", meaning: "Sezgi, gizli bilgi, bilinçaltı", icon: Book, color: "text-pink-500" },
+  { name: "The Empress", meaning: "Bereket, annelik, doğa", icon: Feather, color: "text-green-300" },
 ];
 
 const TarotFali = () => {
   const [selectedCard, setSelectedCard] = useState(null);
   const [isFlipped, setIsFlipped] = useState(false);
+  const [showMeaningDialog, setShowMeaningDialog] = useState(false);
+  const [dailyCardDrawn, setDailyCardDrawn] = useState(false);
+
+  useEffect(() => {
+    const lastDrawDate = localStorage.getItem('lastTarotDrawDate');
+    const today = new Date().toDateString();
+    if (lastDrawDate !== today) {
+      setDailyCardDrawn(false);
+    } else {
+      setDailyCardDrawn(true);
+    }
+  }, []);
 
   const selectRandomCard = () => {
+    if (dailyCardDrawn) {
+      toast.error("Günlük tarot kartınızı zaten çektiniz. Yarın tekrar deneyin!");
+      return;
+    }
     setIsFlipped(false);
     const randomCard = tarotCards[Math.floor(Math.random() * tarotCards.length)];
     setSelectedCard(randomCard);
     setTimeout(() => setIsFlipped(true), 500);
+    localStorage.setItem('lastTarotDrawDate', new Date().toDateString());
+    setDailyCardDrawn(true);
   };
 
   return (
@@ -64,9 +86,14 @@ const TarotFali = () => {
                   </motion.div>
                 )}
               </AnimatePresence>
-              <Button onClick={selectRandomCard} className="bg-purple-600 hover:bg-purple-700 text-white">
-                {selectedCard ? "Yeni Kart Çek" : "Kart Çek"}
+              <Button onClick={selectRandomCard} className="bg-purple-600 hover:bg-purple-700 text-white" disabled={dailyCardDrawn}>
+                {dailyCardDrawn ? "Günlük Kart Çekildi" : "Günlük Kart Çek"}
               </Button>
+              {selectedCard && (
+                <Button onClick={() => setShowMeaningDialog(true)} className="ml-2 bg-purple-600 hover:bg-purple-700 text-white">
+                  Anlamı Gör
+                </Button>
+              )}
             </CardContent>
           </Card>
           <Card className="bg-white bg-opacity-10 backdrop-blur-md">
@@ -100,6 +127,18 @@ const TarotFali = () => {
           </Button>
         </motion.div>
       </div>
+      <Dialog open={showMeaningDialog} onOpenChange={setShowMeaningDialog}>
+        <DialogContent className="bg-purple-900 text-white">
+          <DialogHeader>
+            <DialogTitle className="flex items-center text-2xl">
+              {selectedCard && React.createElement(selectedCard.icon, { className: `w-8 h-8 mr-2 ${selectedCard.color}` })}
+              {selectedCard?.name}
+            </DialogTitle>
+          </DialogHeader>
+          <p className="text-lg">{selectedCard?.meaning}</p>
+          <p className="mt-4 text-sm italic">Bu kart, hayatınızın şu anki durumunu yansıtabilir. Üzerinde düşünün ve size ne ifade ettiğini anlamaya çalışın.</p>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

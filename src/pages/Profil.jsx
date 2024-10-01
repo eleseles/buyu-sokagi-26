@@ -4,7 +4,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { User, Star, Book, Shield, Zap, Heart, Trophy, Scroll, Award } from 'lucide-react';
+import { User, Star, Book, Shield, Zap, Heart, Trophy, Scroll, Award, Briefcase, Feather } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import confetti from 'canvas-confetti';
@@ -33,7 +33,18 @@ const Profil = () => {
     quests: [
       { id: 1, name: "Kayıp Grimuar'ı Bul", progress: 60, reward: "500 XP" },
       { id: 2, name: "3 Koruma Büyüsü Yap", progress: 33, reward: "Nadir Tılsım" },
-    ]
+    ],
+    skills: [
+      { name: "Büyü Yapımı", level: 4 },
+      { name: "Tarot Okuma", level: 3 },
+      { name: "Meditasyon", level: 5 },
+      { name: "Enerji Manipülasyonu", level: 2 },
+    ],
+    dailyTasks: [
+      { id: 1, name: "Günlük Meditasyon", completed: false },
+      { id: 2, name: "Bir Büyü Kitabı Oku", completed: false },
+      { id: 3, name: "Bir Tılsım Yap", completed: true },
+    ],
   });
 
   const [showAchievementDialog, setShowAchievementDialog] = useState(false);
@@ -64,6 +75,16 @@ const Profil = () => {
     "Sıradan": "bg-gray-500",
     "Nadir": "bg-blue-500",
     "Efsanevi": "bg-purple-500"
+  };
+
+  const completeTask = (taskId) => {
+    setUser(prevUser => ({
+      ...prevUser,
+      dailyTasks: prevUser.dailyTasks.map(task =>
+        task.id === taskId ? { ...task, completed: true } : task
+      ),
+      xp: prevUser.xp + 50 > prevUser.nextLevelXp ? prevUser.nextLevelXp : prevUser.xp + 50
+    }));
   };
 
   return (
@@ -128,13 +149,27 @@ const Profil = () => {
             <CardTitle className="text-2xl text-white">Ruhsal İstatistikler</CardTitle>
           </CardHeader>
           <CardContent>
-            <Tabs defaultValue="rituals">
-              <TabsList className="grid w-full grid-cols-4">
+            <Tabs defaultValue="skills">
+              <TabsList className="grid w-full grid-cols-5">
+                <TabsTrigger value="skills">Yetenekler</TabsTrigger>
                 <TabsTrigger value="rituals">Ritüeller</TabsTrigger>
                 <TabsTrigger value="books">Okumalar</TabsTrigger>
                 <TabsTrigger value="achievements">Başarılar</TabsTrigger>
                 <TabsTrigger value="inventory">Envanter</TabsTrigger>
               </TabsList>
+              <TabsContent value="skills">
+                <div className="grid grid-cols-2 gap-4">
+                  {user.skills.map((skill, index) => (
+                    <Card key={index} className="bg-purple-800 bg-opacity-50">
+                      <CardContent className="p-4">
+                        <h4 className="text-lg font-bold text-white mb-2">{skill.name}</h4>
+                        <Progress value={(skill.level / 10) * 100} className="mb-2" />
+                        <p className="text-sm text-purple-200">Seviye {skill.level}/10</p>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </TabsContent>
               <TabsContent value="rituals">
                 <div className="text-center">
                   <Zap className="w-12 h-12 text-yellow-400 mx-auto mb-2" />
@@ -200,6 +235,28 @@ const Profil = () => {
                 <h4 className="text-lg font-bold text-white">{quest.name}</h4>
                 <Progress value={quest.progress} className="mt-2" />
                 <p className="text-sm text-purple-200 mt-1">Ödül: {quest.reward}</p>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+        <Card className="mt-6 bg-white bg-opacity-20 backdrop-blur-md">
+          <CardHeader>
+            <CardTitle className="text-2xl text-white flex items-center">
+              <Briefcase className="w-6 h-6 mr-2" />
+              Günlük Görevler
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {user.dailyTasks.map((task) => (
+              <div key={task.id} className="flex items-center justify-between mb-2">
+                <span className={`text-lg ${task.completed ? 'text-green-400 line-through' : 'text-white'}`}>
+                  {task.name}
+                </span>
+                {!task.completed && (
+                  <Button onClick={() => completeTask(task.id)} size="sm" variant="outline">
+                    Tamamla
+                  </Button>
+                )}
               </div>
             ))}
           </CardContent>

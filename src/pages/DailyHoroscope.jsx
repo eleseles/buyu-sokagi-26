@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Aries, Taurus, Gemini, Cancer, Leo, Virgo, Libra, Scorpio, Sagittarius, Capricorn, Star, Pisces } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 
 const zodiacSigns = [
   { name: "Koç", icon: Aries },
@@ -20,27 +21,40 @@ const zodiacSigns = [
   { name: "Balık", icon: Pisces },
 ];
 
+const fetchHoroscope = async (sign) => {
+  // Bu fonksiyon normalde bir API'ye istek atardı, ancak şimdilik rastgele bir yorum döndüreceğiz
+  const horoscopeTexts = [
+    "Bugün şansınız yaver gidecek. Yeni fırsatlar kapınızı çalabilir.",
+    "İlişkilerinizde dikkatli olun. Yanlış anlaşılmalar yaşanabilir.",
+    "Finansal konularda temkinli davranın. Beklenmedik harcamalar olabilir.",
+    "Sağlığınıza özen gösterin. Bol bol dinlenin ve stresten uzak durun.",
+    "Yaratıcılığınız zirve yapacak. Yeni projelere başlamak için ideal bir gün.",
+    "Aşk hayatınızda heyecan verici gelişmeler olabilir. Gözlerinizi açık tutun.",
+    "İş hayatınızda önemli kararlar alabilirsiniz. Sezgilerinize güvenin.",
+    "Ailenizle vakit geçirmek size iyi gelecek. Ev içi aktivitelere yönelin.",
+    "Eğitim ve öğrenme konularında şanslı bir gündesiniz. Yeni bir kursa başlayabilirsiniz.",
+    "Seyahat planları yapabilirsiniz. Kısa bir gezi size iyi gelebilir.",
+  ];
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(horoscopeTexts[Math.floor(Math.random() * horoscopeTexts.length)]);
+    }, 1000);
+  });
+};
+
 const DailyHoroscope = () => {
   const [selectedSign, setSelectedSign] = useState(null);
-  const [horoscope, setHoroscope] = useState(null);
+  const { data: horoscope, isLoading, error, refetch } = useQuery({
+    queryKey: ['horoscope', selectedSign],
+    queryFn: () => fetchHoroscope(selectedSign),
+    enabled: !!selectedSign,
+  });
 
   const generateHoroscope = () => {
-    if (!selectedSign) return;
-
-    const horoscopeTexts = [
-      "Bugün şansınız yaver gidecek. Yeni fırsatlar kapınızı çalabilir.",
-      "İlişkilerinizde dikkatli olun. Yanlış anlaşılmalar yaşanabilir.",
-      "Finansal konularda temkinli davranın. Beklenmedik harcamalar olabilir.",
-      "Sağlığınıza özen gösterin. Bol bol dinlenin ve stresten uzak durun.",
-      "Yaratıcılığınız zirve yapacak. Yeni projelere başlamak için ideal bir gün.",
-      "Aşk hayatınızda heyecan verici gelişmeler olabilir. Gözlerinizi açık tutun.",
-      "İş hayatınızda önemli kararlar alabilirsiniz. Sezgilerinize güvenin.",
-      "Ailenizle vakit geçirmek size iyi gelecek. Ev içi aktivitelere yönelin.",
-      "Eğitim ve öğrenme konularında şanslı bir gündesiniz. Yeni bir kursa başlayabilirsiniz.",
-      "Seyahat planları yapabilirsiniz. Kısa bir gezi size iyi gelebilir.",
-    ];
-
-    setHoroscope(horoscopeTexts[Math.floor(Math.random() * horoscopeTexts.length)]);
+    if (selectedSign) {
+      refetch();
+    }
   };
 
   return (
@@ -74,9 +88,12 @@ const DailyHoroscope = () => {
                 ))}
               </SelectContent>
             </Select>
-            <Button onClick={generateHoroscope} className="w-full bg-purple-600 hover:bg-purple-700 text-white" disabled={!selectedSign}>
-              Günlük Yorumu Göster
+            <Button onClick={generateHoroscope} className="w-full bg-purple-600 hover:bg-purple-700 text-white" disabled={!selectedSign || isLoading}>
+              {isLoading ? "Yorum Yükleniyor..." : "Günlük Yorumu Göster"}
             </Button>
+            {error && (
+              <p className="text-red-500 mt-4">Bir hata oluştu. Lütfen tekrar deneyin.</p>
+            )}
             {horoscope && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -87,8 +104,8 @@ const DailyHoroscope = () => {
                 <Card className="bg-purple-800 bg-opacity-50">
                   <CardHeader>
                     <CardTitle className="text-xl text-white flex items-center justify-center">
-                      {React.createElement(selectedSign.icon, { className: "w-6 h-6 mr-2" })}
-                      {selectedSign.name} Burcu Günlük Yorumu
+                      {selectedSign && React.createElement(selectedSign.icon, { className: "w-6 h-6 mr-2" })}
+                      {selectedSign?.name} Burcu Günlük Yorumu
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
