@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Sparkles, Moon, Sun, Wand2, Heart, Compass, Book, Star } from 'lucide-react';
+import { Sparkles, Moon, Sun, Wand2, Heart, Compass, Book, Star, Zap, Shield } from 'lucide-react';
 
 const FeatureCard = ({ icon: Icon, title, description, to }) => (
   <motion.div
@@ -37,6 +37,8 @@ const Index = () => {
     { icon: Compass, title: "Ruhsal Yolculuk", description: "İç dünyanızı keşfetmeniz için rehberlik.", to: "/dogum-haritasi" },
     { icon: Book, title: "Büyü Kitabı", description: "Antik bilgeliği modern dünyaya taşıyan rehberiniz.", to: "/buyu-kitabi" },
     { icon: Sparkles, title: "Mistik Ürünler", description: "Büyüleriniz için gerekli tüm malzemeler.", to: "/alisveris" },
+    { icon: Zap, title: "Enerji Temizliği", description: "Negatif enerjilerden arınma teknikleri.", to: "/enerji-temizligi" },
+    { icon: Shield, title: "Koruyucu Tılsımlar", description: "Kendinizi kötü enerjilerden koruyun.", to: "/koruyucu-tilsimlar" },
   ];
 
   return (
@@ -50,12 +52,17 @@ const Index = () => {
         >
           <h1 className="text-5xl font-bold mb-4">BüyüDünyası'na Hoş Geldiniz</h1>
           <p className="text-xl text-purple-200 mb-8">Mistik güçleri keşfedin, geleceğinizi şekillendirin</p>
-          <Button asChild size="lg" className="bg-purple-600 hover:bg-purple-700">
-            <Link to="/buyu-testi">Büyü Testine Başla</Link>
-          </Button>
+          <div className="flex justify-center space-x-4">
+            <Button asChild size="lg" className="bg-purple-600 hover:bg-purple-700">
+              <Link to="/buyu-testi">Büyü Testine Başla</Link>
+            </Button>
+            <Button asChild size="lg" variant="outline">
+              <Link to="/uye-ol">Üye Ol</Link>
+            </Button>
+          </div>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {features.map((feature, index) => (
             <motion.div
               key={index}
@@ -80,7 +87,7 @@ const Index = () => {
             Kendi gücünüzü keşfedin ve hayatınızı dönüştürün.
           </p>
           <Button asChild variant="outline" size="lg">
-            <Link to="/uye-ol">Hemen Üye Olun</Link>
+            <Link to="/blog">Blog'umuzu Keşfedin</Link>
           </Button>
         </motion.div>
       </div>

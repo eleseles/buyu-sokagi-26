@@ -1,18 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, Gem, Wand2, Flame, Book, Sparkles, Compass, Feather } from 'lucide-react';
+import { Input } from "@/components/ui/input";
+import { ShoppingCart, Gem, Wand2, Flame, Book, Sparkles, Compass, Feather, Moon, Sun, Heart, Shield } from 'lucide-react';
 
 const products = [
   { id: 1, name: "Kristal Küre", price: 199.99, icon: Gem, description: "Geleceği görmek için mükemmel bir araç." },
-  { id: 2, name: "Tarot Destesi", price: 49.99, icon: Feather, description: "Klasik Rider-Waite tarot destesi." },
+  { id: 2, name: "Tarot Destesi", price: 49.99, icon: Sparkles, description: "Klasik Rider-Waite tarot destesi." },
   { id: 3, name: "Tütsü Seti", price: 29.99, icon: Flame, description: "Çeşitli kokulardan oluşan tütsü seti." },
   { id: 4, name: "Büyü Kitabı", price: 79.99, icon: Book, description: "Antik büyüleri içeren el yazması kitap." },
-  { id: 5, name: "Rün Taşları", price: 59.99, icon: Sparkles, description: "Kader okumak için rün taşı seti." },
-  { id: 6, name: "Şifa Kristalleri", price: 39.99, icon: Gem, description: "Çeşitli şifa kristallerinden oluşan set." },
+  { id: 5, name: "Rün Taşları", price: 59.99, icon: Compass, description: "Kader okumak için rün taşı seti." },
+  { id: 6, name: "Şifa Kristalleri", price: 39.99, icon: Heart, description: "Çeşitli şifa kristallerinden oluşan set." },
   { id: 7, name: "Büyü Çubuğu", price: 89.99, icon: Wand2, description: "El yapımı, özel tasarım büyü çubuğu." },
-  { id: 8, name: "Astroloji Haritası", price: 24.99, icon: Compass, description: "Kişiselleştirilmiş astroloji haritası." },
+  { id: 8, name: "Astroloji Haritası", price: 24.99, icon: Moon, description: "Kişiselleştirilmiş astroloji haritası." },
+  { id: 9, name: "Koruyucu Muska", price: 34.99, icon: Shield, description: "Kötü enerjilerden koruyan özel muska." },
+  { id: 10, name: "Meditasyon Seti", price: 69.99, icon: Sun, description: "Meditasyon için gereken tüm malzemeler." },
+  { id: 11, name: "Enerji Piramidi", price: 129.99, icon: Sparkles, description: "Enerji akışını düzenleyen piramit." },
+  { id: 12, name: "Şamanik Davul", price: 159.99, icon: Feather, description: "Ruhsal yolculuklar için şamanik davul." },
 ];
 
 const ProductCard = ({ product }) => (
@@ -38,6 +43,13 @@ const ProductCard = ({ product }) => (
 );
 
 const Alisveris = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredProducts = products.filter(product =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    product.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 py-12">
       <div className="container mx-auto px-4">
@@ -49,8 +61,17 @@ const Alisveris = () => {
         >
           Mistik Ürünler
         </motion.h1>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {products.map((product) => (
+        <div className="mb-8">
+          <Input
+            type="text"
+            placeholder="Ürün ara..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="bg-white bg-opacity-20 text-white placeholder-purple-300"
+          />
+        </div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {filteredProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>

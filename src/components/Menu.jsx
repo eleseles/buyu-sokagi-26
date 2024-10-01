@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Moon, Sun, ShoppingCart } from 'lucide-react';
+import { Moon, Sun, ShoppingCart, User } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { Button } from "@/components/ui/button";
 
 const MenuCategories = {
   Büyü: [
@@ -12,6 +13,8 @@ const MenuCategories = {
     { to: "/buyu-yapimi", label: "Büyü Yapımı" },
     { to: "/buyu-dualari", label: "Büyü Duaları" },
     { to: "/buyu-bozma", label: "Büyü Bozma" },
+    { to: "/enerji-temizligi", label: "Enerji Temizliği" },
+    { to: "/koruyucu-tilsimlar", label: "Koruyucu Tılsımlar" },
   ],
   Tarot: [
     { to: "/tarot-fali", label: "Tarot Falı" },
@@ -22,6 +25,7 @@ const MenuCategories = {
   Astroloji: [
     { to: "/astroloji-ve-buyu", label: "Astroloji ve Büyü" },
     { to: "/dogum-haritasi", label: "Doğum Haritası" },
+    { to: "/gunluk-burc-yorumlari", label: "Günlük Burç Yorumları" },
   ],
   Diğer: [
     { to: "/gunluk-tavsiyeler", label: "Günlük Tavsiyeler" },
@@ -50,7 +54,7 @@ const Menu = () => {
           </TabsList>
           {Object.entries(MenuCategories).map(([category, items]) => (
             <TabsContent key={category} value={category} className="absolute left-0 right-0 bg-purple-800 mt-1">
-              <div className="flex space-x-4 p-2">
+              <div className="flex flex-wrap justify-center space-x-4 p-2">
                 {items.map((item) => (
                   <Link key={item.to} to={item.to} className="text-white hover:text-purple-200">
                     {item.label}
@@ -64,12 +68,17 @@ const Menu = () => {
           <Link to="/alisveris" className="text-white hover:text-purple-200">
             <ShoppingCart className="h-4 w-4" />
           </Link>
-          <button
+          <Link to="/profil" className="text-white hover:text-purple-200">
+            <User className="h-4 w-4" />
+          </Link>
+          <Button
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            variant="ghost"
+            size="icon"
             className="text-white hover:text-purple-200"
           >
             {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-          </button>
+          </Button>
         </div>
       </div>
     </nav>
